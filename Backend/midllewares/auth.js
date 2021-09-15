@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Constants = require("../utils/constants");
 const ExpressError = require("../utils/ExpressError");
@@ -58,5 +59,28 @@ module.exports.isPasswordCorrect = async (req, res, next) => {
     if (!isEqual) {
         throw new ExpressError('Wrong password', Constants.UNAUTHORIZED, 401);
     }
+    next();
+}
+
+module.exports.isAuth = async (req, res, next) => {
+    const authHeader = req.get('Authorization');
+    console.log(authHeader);
+    if (!authHeader) {
+        throw new ExpressError('Not authenticated', Constants.UNAUTHORIZED, 401);
+    }
+    const bearer = authHeader.split(' ')[0];
+    const token = authHeader.split(' ')[1];
+    if (!token || bearer !== 'Bearer') {
+        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+    }
+    decodedToken = jwt.verify(token, Constants.SECRET_SIGNATURE);
+
+    console.log(decodedToken.userId);
+
+    const user = await User.findById(decodedToken.userId);
+    if (!user) {
+        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+    }
+    req.user = user;
     next();
 }

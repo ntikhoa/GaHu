@@ -14,7 +14,7 @@ exports.register = async (req, res, next) => {
     });
     const result = await user.save();
 
-    const token = getToken(result._id, hashedPassword);
+    const token = createToken(result._id, hashedPassword);
 
     res.status(201).json({
         status: 201,
@@ -32,7 +32,7 @@ exports.register = async (req, res, next) => {
 exports.login = async (req, res, next) => {
     const user = req.user;
 
-    const token = getToken(user.userId, user.hashedPassword);
+    const token = createToken(user._id, user.password);
 
     res.status(200).json({
         status: 200,
@@ -47,7 +47,7 @@ exports.login = async (req, res, next) => {
     })
 }
 
-function getToken(userId, hashedPassword) {
+function createToken(userId, hashedPassword) {
     return jwt.sign({
         userId: userId,
         hashedPassword: hashedPassword

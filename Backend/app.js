@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const authRoutes = require('./routes/auth')
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
 
 
 const app = express();
@@ -16,6 +17,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
@@ -23,7 +25,7 @@ app.use((err, req, res, next) => {
     var error = err.error;
     console.log(message);
     if (statusCode == 500 || !message) message = "(500) Something went wrong in the server";
-    if (statusCode == 500 || !error) error = "Server error"
+    if (statusCode == 500 || !error) error = "Server errors"
     res.status(statusCode).json({
         status: statusCode,
         data: null,
