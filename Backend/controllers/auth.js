@@ -14,15 +14,19 @@ exports.register = async (req, res, next) => {
     });
     const result = await user.save();
     console.log(result);
+
     const token = jwt.sign({
         userId: result._id,
         hashedPassword: hashedPassword
     }, Constants.SECRET_SIGNATURE);
+
     res.status(201).json({
         status: 201,
         data: {
             token: token,
-            user: user
+            id: result._id,
+            email: result.email,
+            username: result.username
         },
         error: null,
         message: 'Register succesfully.'
