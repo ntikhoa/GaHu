@@ -1,14 +1,19 @@
 const express = require('express');
 const controller = require('../controllers/auth');
-const { isPasswordConfirmMatched, validateRegister, checkExistedUserByEmail } = require('../midllewares/auth');
 const catchAsync = require('../utils/catchAsync');
+const { isPasswordConfirmMatched, validateRegister, checkRegisteredUserByEmail, isEmailExist, isPasswordCorrect } = require('../midllewares/auth');
 
 const router = express.Router();
 
 
 router.post('/register', validateRegister,
-    catchAsync(checkExistedUserByEmail),
     isPasswordConfirmMatched,
+    catchAsync(checkRegisteredUserByEmail),
     catchAsync(controller.register));
+
+router.post('/login',
+    catchAsync(isEmailExist),
+    catchAsync(isPasswordCorrect),
+    catchAsync(controller.login));
 
 module.exports = router;

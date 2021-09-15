@@ -4,21 +4,17 @@ const User = require('../models/user');
 const Constants = require('../utils/constants');
 
 exports.register = async (req, res, next) => {
-    const { email, username, password, confirmPassword } = req.body;
+    const { email, username, password } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, Constants.SALT);
     const user = new User({
         email: email,
         username: username,
         password: hashedPassword
     });
     const result = await user.save();
-    console.log(result);
 
-    const token = jwt.sign({
-        userId: result._id,
-        hashedPassword: hashedPassword
-    }, Constants.SECRET_SIGNATURE);
+    const token = getToken(result._id, hashedPassword);
 
     res.status(201).json({
         status: 201,
@@ -29,6 +25,31 @@ exports.register = async (req, res, next) => {
             username: result.username
         },
         error: null,
-        message: 'Register succesfully.'
+        message: 'Register successfully'
     });
+}
+
+exports.login = async (req, res, next) => {
+    const user = req.user;
+
+    const token = getToken(user.userId, user.hashedPassword);
+
+    res.status(200).json({
+        status: 200,
+        data: {
+            token: token,
+            id: user._id,
+            email: user.email,
+            username: user.username
+        },
+        error: null,
+        message: 'Login successfully'
+    })
+}
+
+function getToken(userId, hashedPassword) {
+    return jwt.sign({
+        userId: userId,
+        hashedPassword: hashedPassword
+    }, Constants.SECRET_SIGNATURE);
 }
