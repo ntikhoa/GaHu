@@ -11,13 +11,16 @@ module.exports.validateRegister = (req, res, next) => {
     next();
 }
 
+const registerBodySchema = Joi.object({
+    email: Joi.string().lowercase().email().required(),
+    username: Joi.string().max(16).required(),
+    password: Joi.string().min(8).required(),
+    confirmPassword: Joi.string().required()
+});
+
 module.exports.isPasswordConfirmMatched = (req, res, next) => {
     const { password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-        throw new ExpressError('Confirm password is not matched with password',
-            Constants.BAD_REQUEST,
-            300);
-    }
+    checkPasswordConfirmation(password, confirmPassword);
     next();
 }
 
@@ -30,13 +33,6 @@ module.exports.checkRegisteredUserByEmail = async (req, res, next) => {
     next();
 }
 
-const registerBodySchema = Joi.object({
-    email: Joi.string().lowercase().email().required(),
-    username: Joi.string().max(16).required(),
-    password: Joi.string().min(8).required(),
-    confirmPassword: Joi.string().required()
-});
-
 module.exports.isEmailExist = async (req, res, next) => {
     const { email } = req.body;
 
@@ -45,7 +41,7 @@ module.exports.isEmailExist = async (req, res, next) => {
         throw new ExpressError('Email does not exist', Constants.NOT_FOUND, 404);
     }
     req.user = user;
-    next()
+    next();
 }
 
 module.exports.isPasswordCorrect = async (req, res, next) => {
@@ -59,9 +55,28 @@ module.exports.isPasswordCorrect = async (req, res, next) => {
     next();
 }
 
+module.exports.isNewPasswordConfirmMatched = (req, res, next) => {
+    const { newPassword, newConfirmPassword } = req.body;
+    checkPasswordConfirmation(newPassword, newConfirmPassword);
+    next();
+}
+
+function checkPasswordConfirmation(password, confirmPassword) {
+    if (password !== confirmPassword) {
+        throw new ExpressError('Confirm password is not matched with password',
+            Constants.BAD_REQUEST,
+            300);
+    }
+}
+
+module.exports.validateNewPassword = (req, res, next) => {
+    const { newPassword } = req.body;
+    validateSchema(Joi.string().min(8).required(), newPassword);
+    next();
+}
+
 module.exports.isAuth = async (req, res, next) => {
     const authHeader = req.get('Authorization');
-    console.log(authHeader);
     if (!authHeader) {
         throw new ExpressError('Not authenticated', Constants.UNAUTHORIZED, 401);
     }
@@ -72,12 +87,14 @@ module.exports.isAuth = async (req, res, next) => {
     }
     decodedToken = jwt.verify(token, Constants.SECRET_SIGNATURE);
 
-    console.log(decodedToken.userId);
-
     const user = await User.findById(decodedToken.userId);
     if (!user) {
         throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
     }
+    if (decodedToken.createdAt !== user.passwordChangedAt) {
+        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+    }
+
     req.user = user;
     next();
 }

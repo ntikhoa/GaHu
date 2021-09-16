@@ -1,4 +1,4 @@
-exports.getUser = (req, res, next) => {
+module.exports.getUser = (req, res, next) => {
     const user = req.user;
 
     res.status(200).json({
@@ -13,7 +13,7 @@ exports.getUser = (req, res, next) => {
     });
 }
 
-exports.updateUser = async (req, res, next) => {
+module.exports.updateUser = async (req, res, next) => {
     const { email, username } = req.body;
     const user = req.user;
 
