@@ -14,7 +14,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
-})
+});
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
@@ -32,21 +32,21 @@ app.use((err, req, res, next) => {
         error: error,
         message: message
     });
-})
+});
 
 mongoose.connect('mongodb://localhost:27017/game-info',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    })
+    });
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'CONNECTION ERROR:'))
 db.once('open', () => {
     console.log('CONNECTION OPEN')
-})
+});
 
 
 app.listen(3000, () => {
     console.log('LISTENING ON PORT 3K');
-})
+});

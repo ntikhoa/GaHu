@@ -4,13 +4,10 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Constants = require("../utils/constants");
 const ExpressError = require("../utils/ExpressError");
+const { validateSchema } = require("../utils/validate");
 
 module.exports.validateRegister = (req, res, next) => {
-    const { error } = registerBodySchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, Constants.BAD_REQUEST, 400);
-    }
+    validateSchema(registerBodySchema, req.body);
     next();
 }
 
@@ -38,7 +35,7 @@ const registerBodySchema = Joi.object({
     username: Joi.string().max(16).required(),
     password: Joi.string().min(8).required(),
     confirmPassword: Joi.string().required()
-})
+});
 
 module.exports.isEmailExist = async (req, res, next) => {
     const { email } = req.body;
