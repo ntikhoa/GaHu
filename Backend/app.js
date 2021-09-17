@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const platformRoutes = require('./routes/platform');
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/platforms', platformRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
