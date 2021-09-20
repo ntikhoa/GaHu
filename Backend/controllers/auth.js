@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const Constants = require('../utils/constants');
+const Constants = require('../utils/Constants');
 
 module.exports.register = async (req, res, next) => {
     const { email, username, password } = req.body;
@@ -35,7 +35,7 @@ module.exports.register = async (req, res, next) => {
 module.exports.login = (req, res, next) => {
     const user = req.user;
 
-    const token = createToken(user._id, user.password);
+    const token = createToken(user._id, user.passwordChangedAt);
 
     res.status(200).json({
         status: 200,

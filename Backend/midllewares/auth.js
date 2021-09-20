@@ -2,7 +2,7 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
-const Constants = require("../utils/constants");
+const Constants = require("../utils/Constants");
 const ExpressError = require("../utils/ExpressError");
 const { validateSchema } = require("../utils/validate");
 
@@ -12,8 +12,8 @@ module.exports.validateRegister = (req, res, next) => {
 }
 
 const registerBodySchema = Joi.object({
-    email: Joi.string().lowercase().email().required(),
-    username: Joi.string().max(16).required(),
+    email: Joi.string().trim().lowercase().email().required(),
+    username: Joi.string().trim().max(16).required(),
     password: Joi.string().min(8).required(),
     confirmPassword: Joi.string().required()
 });
@@ -89,12 +89,24 @@ module.exports.isAuth = async (req, res, next) => {
 
     const user = await User.findById(decodedToken.userId);
     if (!user) {
+        console.log('cannot find user');
         throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
     }
+    console.log(decodedToken.createdAt);
+    console.log(user.passwordChangedAt);
     if (decodedToken.createdAt !== user.passwordChangedAt) {
+        console.log('password change');
         throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
     }
 
     req.user = user;
+    next();
+}
+
+module.exports.isAdmin = (req, res, next) => {
+    const user = req.user;
+    if (!Constants.ADMIN_EMAILS.includes(user.email)) {
+        throw new ExpressError('Only admin can use this feature', Constants.FORBIDDEN, 403);
+    }
     next();
 }

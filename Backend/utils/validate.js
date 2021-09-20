@@ -1,5 +1,5 @@
 const ExpressError = require("./ExpressError");
-const Constants = require("./constants");
+const Constants = require("./Constants");
 
 exports.validateSchema = (schema, body) => {
     const { error } = schema.validate(body);

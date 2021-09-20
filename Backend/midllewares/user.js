@@ -1,5 +1,5 @@
 const joi = require("joi");
-const Constants = require("../utils/constants");
+const Constants = require("../utils/Constants");
 const ExpressError = require("../utils/ExpressError");
 const User = require("../models/user");
 const { validateSchema } = require("../utils/validate");
@@ -10,8 +10,8 @@ module.exports.validateUpdateUser = (req, res, next) => {
 }
 
 const updateUserSchema = joi.object({
-    email: joi.string().lowercase().email().required(),
-    username: joi.string().max(16).required()
+    email: joi.string().trim().lowercase().email().required(),
+    username: joi.string().trim().max(16).required()
 });
 
 module.exports.checkDuplicateUpdatedEmail = async (req, res, next) => {

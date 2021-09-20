@@ -1,14 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const platformRoutes = require('./routes/platform');
+const gameRoutes = require('./routes/game');
+const { removeImage } = require('./utils/removeImage');
 
 
 const app = express();
 app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
 app.use(express.json()); //application/json
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,12 +25,16 @@ app.use((req, res, next) => {
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/platforms', platformRoutes);
+app.use('/games', gameRoutes);
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     var message = err.message;
     var error = err.error;
     console.log(message);
+    if (req.file) {
+        removeImage(req.file.path.replace("\\", '/'));
+    }
     if (statusCode == 500 || !message) message = "(500) Something went wrong in the server";
     if (statusCode == 500 || !error) error = "Server errors"
     res.status(statusCode).json({
