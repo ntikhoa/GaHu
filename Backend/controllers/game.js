@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Constants = require("../utils/Constants");
-const ExpressError = require("../utils/ExpressError");
 const Game = require('../models/game');
 
 module.exports.createGame = async (req, res, next) => {
@@ -32,7 +31,7 @@ module.exports.createGame = async (req, res, next) => {
             id: el._id,
             name: el.name
         }
-    })
+    });
 
     res.status(201).json({
         status: 201,
@@ -51,4 +50,35 @@ module.exports.createGame = async (req, res, next) => {
         error: null,
         message: 'Create game successfully'
     });
+}
+
+module.exports.getGameDetail = async (req, res, next) => {
+    const game = req.game;
+
+    const platforms = game.platforms.map(el => {
+        return {
+            id: el._id,
+            name: el.name
+        }
+    })
+
+    const isAuthor = req.user._id.equals(game.author._id);
+
+    res.status(200).json({
+        status: 200,
+        data: {
+            isAuthor: isAuthor,
+            title: game.title,
+            releaseDate: game.releaseDate,
+            description: game.description,
+            platforms: platforms,
+            image: Constants.BASE_URL + game.image,
+            author: {
+                id: game.author._id,
+                username: game.author.username
+            }
+        },
+        error: null,
+        message: 'Get game details successfully'
+    })
 }

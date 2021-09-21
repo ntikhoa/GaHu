@@ -1,8 +1,10 @@
-const { validateSchema } = require('../utils/validate');
+const mongoose = require('mongoose')
 const Joi = require('joi');
 const moment = require('moment');
+const Game = require('../models/game');
 const ExpressError = require('../utils/ExpressError');
 const Constants = require('../utils/Constants');
+const { validateSchema } = require('../utils/validate');
 
 
 module.exports.validateCreateGameBody = (req, res, next) => {
@@ -25,3 +27,20 @@ const createGameSchema = Joi.object({
     platformIds: Joi.array().items(Joi.string()).required(),
     releaseDate: Joi.string().trim()
 });
+
+module.exports.validateGetGameDetail = async (req, res, next) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ExpressError("Invalid game id", Constants.BAD_REQUEST, 400);
+    }
+
+    const game = await Game.findById(id)
+        .populate('platforms')
+        .populate('author');
+    if (!game) {
+        throw new ExpressError("Game not found", Constants.NOT_FOUND, 404);
+    }
+    req.game = game;
+    next();
+}

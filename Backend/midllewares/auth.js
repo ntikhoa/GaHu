@@ -92,8 +92,6 @@ module.exports.isAuth = async (req, res, next) => {
         console.log('cannot find user');
         throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
     }
-    console.log(decodedToken.createdAt);
-    console.log(user.passwordChangedAt);
     if (decodedToken.createdAt !== user.passwordChangedAt) {
         console.log('password change');
         throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
