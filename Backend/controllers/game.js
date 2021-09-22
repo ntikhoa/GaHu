@@ -23,9 +23,7 @@ module.exports.createGame = async (req, res, next) => {
     });
 
     const result = await game.save();
-    const platformPopulatePromise = Game.populate(result, { path: 'platforms' });
-    const authorPopulatePromise = Game.populate(result, { path: 'author' });
-    await Promise.all([platformPopulatePromise, authorPopulatePromise]);
+    await Game.populate(result, { path: 'platforms' });
 
     const platforms = result.platforms.map(el => {
         return {
@@ -44,9 +42,9 @@ module.exports.createGame = async (req, res, next) => {
             platforms: platforms,
             image: Constants.BASE_URL + result.image,
             author: {
-                id: result.author._id,
-                email: result.author.email,
-                username: result.author.username
+                id: user._id,
+                email: user.email,
+                username: user.username
             }
         },
         error: null,
@@ -99,4 +97,62 @@ module.exports.deleteGame = async (req, res, next) => {
         error: null,
         message: 'Delete successfully'
     });
+}
+
+module.exports.updateGame = async (req, res, next) => {
+    const { title, releaseDate, description, platformIds } = req.body;
+    const file = req.file;
+    const game = req.game;
+    const user = req.user;
+
+    if (title) {
+        game.title = title;
+    }
+    if (releaseDate) {
+        game.releaseDate = releaseDate;
+    }
+    if (description) {
+        game.description = description;
+    }
+    if (platformIds) {
+        const platformIdsObject = platformIds.map(el => {
+            return mongoose.Types.ObjectId(el);
+        });
+        game.platforms = platformIdsObject;
+    }
+    if (file) {
+        removeImage(game.image);
+        const imageUrl = file.path.replace("\\", '/');
+        game.image = imageUrl;
+    }
+
+    await game.save();
+    await Game.populate(game, { path: 'platforms' });
+
+    const platforms = game.platforms.map(el => {
+        return {
+            id: el._id,
+            name: el.name
+        }
+    });
+
+    res.status(201).json({
+        status: 201,
+        data: {
+            _id: game._id,
+            title: game.title,
+            releaseDate: game.releaseDate,
+            description: game.description,
+            platforms: platforms,
+            image: Constants.BASE_URL + game.image,
+            author: {
+                id: user._id,
+                email: user.email,
+                username: user.username
+            }
+        },
+        error: null,
+        message: 'Update game successfully'
+    });
+
 }

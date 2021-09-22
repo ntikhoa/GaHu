@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Joi = require('joi');
 const moment = require('moment');
+const imageSize = require('image-size');
 const Game = require('../models/game');
 const ExpressError = require('../utils/ExpressError');
 const Constants = require('../utils/Constants');
@@ -10,14 +11,14 @@ const { validateSchema } = require('../utils/validate');
 module.exports.validateCreateGameBody = (req, res, next) => {
     validateSchema(createGameSchema, req.body);
     if (req.body.releaseDate) {
-        if (!moment(req.body.releaseDate, 'YYYY-MM-DD', true).isValid()) {
-            throw new ExpressError('Invalid date format YYYY-MM-DD',
-                Constants.BAD_REQUEST, 400);
-        }
+        validateDateFormat(req.body.releaseDate);
     }
     if (!req.file) {
         throw new ExpressError('Image is not provided', Constants.BAD_REQUEST, 400);
+    } else {
+        validateImageRatio(req.file.path.replace("\\", "/"));
     }
+
     next();
 }
 
@@ -27,6 +28,22 @@ const createGameSchema = Joi.object({
     platformIds: Joi.array().items(Joi.string()).required(),
     releaseDate: Joi.string().trim()
 });
+
+const validateDateFormat = (date) => {
+    if (!moment(date, 'YYYY-MM-DD', true).isValid()) {
+        throw new ExpressError('Invalid date format YYYY-MM-DD',
+            Constants.BAD_REQUEST, 400);
+    }
+}
+
+const validateImageRatio = (imagePath) => {
+    const imageDimension = imageSize(imagePath);
+    const ratio = imageDimension.width / imageDimension.height;
+    if (ratio < (Constants.IMAGE_RATIO - 0.2)
+        || ratio > (Constants.IMAGE_RATIO + 0.2)) {
+        throw new ExpressError('Invalid image ratio', Constants.BAD_REQUEST, 400);
+    }
+}
 
 module.exports.validateGetGameDetail = async (req, res, next) => {
     const { id } = req.params;
@@ -54,3 +71,22 @@ module.exports.isGameAuthor = (req, res, next) => {
     }
     next();
 }
+
+module.exports.validateUpdateGameBody = (req, res, next) => {
+    validateSchema(updateGameSchema, req.body);
+    if (req.body.releaseDate) {
+        validateDateFormat(req.body.releaseDate);
+    }
+    if (req.file) {
+        validateImageRatio(req.file.path.replace("\\", "/"));
+    }
+
+    next();
+}
+
+const updateGameSchema = Joi.object({
+    title: Joi.string().trim(),
+    description: Joi.string().trim().min(50),
+    platformIds: Joi.array().items(Joi.string()),
+    releaseDate: Joi.string().trim()
+});
