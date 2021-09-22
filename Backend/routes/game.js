@@ -2,7 +2,7 @@ const express = require('express');
 const catchAsync = require('../utils/catchAsync');
 const controller = require('../controllers/game');
 const { isAuth, isAdmin } = require('../midllewares/auth');
-const { validateCreateGameBody, validateGetGameDetail } = require('../midllewares/game');
+const { validateCreateGameBody, validateGetGameDetail, isGameAuthor } = require('../midllewares/game');
 const { uploadImage } = require('../midllewares/uploadImage');
 
 const router = express.Router();
@@ -19,8 +19,10 @@ router.get('/:id',
     catchAsync(validateGetGameDetail),
     controller.getGameDetail);
 
-// router.delete('/:id',
-//     catchAsync(isAuth),
-//     isAuthor, )
+router.delete('/:id',
+    catchAsync(isAuth),
+    catchAsync(validateGetGameDetail),
+    isGameAuthor,
+    catchAsync(controller.deleteGame))
 
 module.exports = router;

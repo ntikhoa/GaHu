@@ -12,13 +12,17 @@ module.exports.uploadImage = (req, res, next) => {
                 next(new ExpressError('Invalid image type', Constants.UNSUPPORTED_MEDIA_TYPE, 415));
             }
         } else {
-            const imageDimension = imageSize(req.file.path.replace("\\", "/"));
-            const ratio = imageDimension.width / imageDimension.height;
-            if (ratio < (Constants.IMAGE_RATIO - 0.2)
-                || ratio > (Constants.IMAGE_RATIO + 0.2)) {
-                next(new ExpressError('Invalid image ratio', Constants.BAD_REQUEST, 400));
+            if (!req.file) {
+                next(new ExpressError('Image file is not provided', Constants.BAD_REQUEST, 400));
+            } else {
+                const imageDimension = imageSize(req.file.path.replace("\\", "/"));
+                const ratio = imageDimension.width / imageDimension.height;
+                if (ratio < (Constants.IMAGE_RATIO - 0.2)
+                    || ratio > (Constants.IMAGE_RATIO + 0.2)) {
+                    next(new ExpressError('Invalid image ratio', Constants.BAD_REQUEST, 400));
+                }
+                next();
             }
-            next();
         }
     });
 }

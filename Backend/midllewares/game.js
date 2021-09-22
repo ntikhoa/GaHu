@@ -44,3 +44,13 @@ module.exports.validateGetGameDetail = async (req, res, next) => {
     req.game = game;
     next();
 }
+
+
+module.exports.isGameAuthor = (req, res, next) => {
+    const user = req.user;
+    const game = req.game;
+    if (!game.author._id.equals(user._id)) {
+        throw new ExpressError("Not allowed", Constants.FORBIDDEN, 403);
+    }
+    next();
+}
