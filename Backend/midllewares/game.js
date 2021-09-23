@@ -3,6 +3,7 @@ const Joi = require('joi');
 const moment = require('moment');
 const imageSize = require('image-size');
 const Game = require('../models/game');
+const Platform = require('../models/platform');
 const ExpressError = require('../utils/ExpressError');
 const Constants = require('../utils/Constants');
 const { validateSchema } = require('../utils/validate');
@@ -43,6 +44,29 @@ const validateImageRatio = (imagePath) => {
         || ratio > (Constants.IMAGE_RATIO + 0.2)) {
         throw new ExpressError('Invalid image ratio', Constants.BAD_REQUEST, 400);
     }
+}
+
+module.exports.validatePlatformIds = async (req, res, next) => {
+    const { platformIds } = req.body;
+    if (platformIds) {
+        for (const platformId of platformIds) {
+            if (!mongoose.Types.ObjectId.isValid(platformId)) {
+                throw new ExpressError("Invalid platform ids", Constants.BAD_REQUEST, 400);
+            }
+        }
+        const platformIdObjects = platformIds.map(el => {
+            return mongoose.Types.ObjectId(el);
+        })
+
+        const result = await Platform.find().where('_id').in(platformIdObjects).exec();
+        if (result.length < platformIds.length) {
+            throw new ExpressError("Platforms not found", Constants.NOT_FOUND, 404);
+        }
+
+        req.platformIdObjects = platformIdObjects;
+        req.platforms = result;
+    }
+    next();
 }
 
 module.exports.validateGetGameDetail = async (req, res, next) => {

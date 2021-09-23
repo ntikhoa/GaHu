@@ -4,28 +4,26 @@ const Game = require('../models/game');
 const { removeImage } = require('../utils/removeImage');
 
 module.exports.createGame = async (req, res, next) => {
-    const { title, releaseDate, description, platformIds } = req.body;
+    const { title, releaseDate, description } = req.body;
+    let platforms = req.platforms;
+    const platformIdObjects = req.platformIdObjects;
     const user = req.user;
     const file = req.file;
 
     const imageUrl = file.path.replace("\\", '/');
-    const platformIdsObject = platformIds.map(el => {
-        return mongoose.Types.ObjectId(el);
-    });
 
     const game = new Game({
         title: title,
         releaseDate: releaseDate,
         description: description,
-        platforms: platformIdsObject,
+        platforms: platformIdObjects,
         image: imageUrl,
         author: user._id
     });
 
     const result = await game.save();
-    await Game.populate(result, { path: 'platforms' });
 
-    const platforms = result.platforms.map(el => {
+    platforms = platforms.map(el => {
         return {
             id: el._id,
             name: el.name
@@ -100,7 +98,9 @@ module.exports.deleteGame = async (req, res, next) => {
 }
 
 module.exports.updateGame = async (req, res, next) => {
-    const { title, releaseDate, description, platformIds } = req.body;
+    const { title, releaseDate, description } = req.body;
+    let platforms = req.platforms;
+    const platformIdObjects = req.platformIdObjects;
     const file = req.file;
     const game = req.game;
     const user = req.user;
@@ -114,11 +114,8 @@ module.exports.updateGame = async (req, res, next) => {
     if (description) {
         game.description = description;
     }
-    if (platformIds) {
-        const platformIdsObject = platformIds.map(el => {
-            return mongoose.Types.ObjectId(el);
-        });
-        game.platforms = platformIdsObject;
+    if (platformIdObjects) {
+        game.platforms = platformIdObjects;
     }
     if (file) {
         removeImage(game.image);
@@ -127,9 +124,13 @@ module.exports.updateGame = async (req, res, next) => {
     }
 
     await game.save();
-    await Game.populate(game, { path: 'platforms' });
 
-    const platforms = game.platforms.map(el => {
+    if (!platforms) {
+        await Game.populate(game, 'platforms');
+        platforms = game.platforms;
+    }
+
+    platforms = platforms.map(el => {
         return {
             id: el._id,
             name: el.name

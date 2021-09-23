@@ -1,5 +1,6 @@
 const Platform = require('../models/platform');
 
+
 module.exports.getAllPlatform = async (req, res, next) => {
     let platforms = await Platform.find({});
     platforms = platforms.map(platform => {
