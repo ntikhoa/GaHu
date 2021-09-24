@@ -5,7 +5,7 @@ const { removeImage } = require('../utils/removeImage');
 
 module.exports.createGame = async (req, res, next) => {
     const { title, releaseDate, description } = req.body;
-    let platforms = req.platforms;
+    const platforms = req.platforms;
     const platformIdObjects = req.platformIdObjects;
     const user = req.user;
     const file = req.file;
@@ -22,13 +22,6 @@ module.exports.createGame = async (req, res, next) => {
     });
 
     const result = await game.save();
-
-    platforms = platforms.map(el => {
-        return {
-            id: el._id,
-            name: el.name
-        }
-    });
 
     res.status(201).json({
         status: 201,
@@ -53,13 +46,6 @@ module.exports.createGame = async (req, res, next) => {
 module.exports.getGameDetail = async (req, res, next) => {
     const game = req.game;
 
-    const platforms = game.platforms.map(el => {
-        return {
-            id: el._id,
-            name: el.name
-        }
-    });
-
     const isAuthor = req.user._id.equals(game.author._id);
 
     res.status(200).json({
@@ -70,12 +56,9 @@ module.exports.getGameDetail = async (req, res, next) => {
             title: game.title,
             releaseDate: game.releaseDate,
             description: game.description,
-            platforms: platforms,
+            platforms: game.platforms,
             image: Constants.BASE_URL + game.image,
-            author: {
-                id: game.author._id,
-                username: game.author.username
-            }
+            author: game.author
         },
         error: null,
         message: 'Get game details successfully'
@@ -103,7 +86,6 @@ module.exports.updateGame = async (req, res, next) => {
     const platformIdObjects = req.platformIdObjects;
     const file = req.file;
     const game = req.game;
-    const user = req.user;
 
     if (title) {
         game.title = title;
@@ -126,16 +108,8 @@ module.exports.updateGame = async (req, res, next) => {
     await game.save();
 
     if (!platforms) {
-        await Game.populate(game, 'platforms');
         platforms = game.platforms;
     }
-
-    platforms = platforms.map(el => {
-        return {
-            id: el._id,
-            name: el.name
-        }
-    });
 
     res.status(201).json({
         status: 201,
@@ -146,14 +120,19 @@ module.exports.updateGame = async (req, res, next) => {
             description: game.description,
             platforms: platforms,
             image: Constants.BASE_URL + game.image,
-            author: {
-                id: user._id,
-                email: user.email,
-                username: user.username
-            }
+            author: game.author
         },
         error: null,
         message: 'Update game successfully'
     });
 
+}
+
+module.exports.getGames = async (req, res, next) => {
+    const game = await Game.find({}).limit(1);
+    await Game.populate(game, { path: 'platforms', select: 'name' })
+        .populate(game, { path: 'author', select: 'username email' });
+    res.json({
+        game: game
+    });
 }

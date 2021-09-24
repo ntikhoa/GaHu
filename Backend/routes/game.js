@@ -36,4 +36,6 @@ router.patch('/:id',
     catchAsync(controller.updateGame)
 );
 
+router.get('/', catchAsync(isAuth), catchAsync(controller.getGames))
+
 module.exports = router;

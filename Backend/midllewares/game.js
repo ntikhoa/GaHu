@@ -58,7 +58,12 @@ module.exports.validatePlatformIds = async (req, res, next) => {
             return mongoose.Types.ObjectId(el);
         })
 
-        const result = await Platform.find().where('_id').in(platformIdObjects).exec();
+        const result = await Platform.find()
+            .where('_id')
+            .in(platformIdObjects)
+            .select({ 'name': 1 })
+            .exec();
+
         if (result.length < platformIds.length) {
             throw new ExpressError("Platforms not found", Constants.NOT_FOUND, 404);
         }
@@ -77,8 +82,8 @@ module.exports.validateGetGameDetail = async (req, res, next) => {
     }
 
     const game = await Game.findById(id)
-        .populate('platforms')
-        .populate('author');
+        .populate('platforms', 'name')
+        .populate('author', 'username email');
     if (!game) {
         throw new ExpressError("Game not found", Constants.NOT_FOUND, 404);
     }

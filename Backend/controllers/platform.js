@@ -2,13 +2,7 @@ const Platform = require('../models/platform');
 
 
 module.exports.getAllPlatform = async (req, res, next) => {
-    let platforms = await Platform.find({});
-    platforms = platforms.map(platform => {
-        return {
-            id: platform._id,
-            name: platform.name
-        };
-    });
+    let platforms = await Platform.find({}).select({ 'name': 1 });
 
     res.status(200).json({
         status: 200,
