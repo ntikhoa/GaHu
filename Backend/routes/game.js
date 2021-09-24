@@ -2,7 +2,7 @@ const express = require('express');
 const catchAsync = require('../utils/catchAsync');
 const controller = require('../controllers/game');
 const { isAuth, isAdmin } = require('../midllewares/auth');
-const { validateCreateGameBody, validateGetGameDetail, isGameAuthor, validateUpdateGameBody, validatePlatformIds } = require('../midllewares/game');
+const { validateCreateGameBody, validateGetGameDetail, isGameAuthor, validateUpdateGameBody, validatePlatformIds, validateGetGamesPagination } = require('../midllewares/game');
 const { uploadImage } = require('../midllewares/uploadImage');
 
 const router = express.Router();
@@ -36,6 +36,9 @@ router.patch('/:id',
     catchAsync(controller.updateGame)
 );
 
-router.get('/', catchAsync(isAuth), catchAsync(controller.getGames))
+router.get('/',
+    catchAsync(isAuth),
+    validateGetGamesPagination,
+    catchAsync(controller.getGames))
 
 module.exports = router;

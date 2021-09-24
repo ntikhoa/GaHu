@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Constants = require("../utils/Constants");
 const Game = require('../models/game');
 const { removeImage } = require('../utils/removeImage');
+const ExpressError = require('../utils/ExpressError');
 
 module.exports.createGame = async (req, res, next) => {
     const { title, releaseDate, description } = req.body;
@@ -129,10 +130,37 @@ module.exports.updateGame = async (req, res, next) => {
 }
 
 module.exports.getGames = async (req, res, next) => {
-    const game = await Game.find({}).limit(1);
-    await Game.populate(game, { path: 'platforms', select: 'name' })
-        .populate(game, { path: 'author', select: 'username email' });
-    res.json({
-        game: game
+    const { page } = req.query;
+
+    let games = await Game.find({})
+        .skip((page - 1) * Constants.PER_PAGE)
+        .limit(Constants.PER_PAGE)
+        .select('title releaseDate description platforms image author')
+        .populate('platforms', 'name')
+        .populate('author', 'username email');
+
+    if (!games || games.length == 0) {
+        res.status(200).json({
+            status: 200,
+            data: null,
+            error: null,
+            message: 'Exhausted'
+        })
+    }
+
+    games = games.map(el => {
+        el.image = Constants.BASE_URL + el.image;
+        return el;
+    })
+
+    res.status(200).json({
+        status: 200,
+        data: {
+            page: page,
+            perPage: Constants.PER_PAGE,
+            games: games
+        },
+        error: null,
+        message: 'Get games successfully'
     });
 }

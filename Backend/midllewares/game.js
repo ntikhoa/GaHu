@@ -119,3 +119,12 @@ const updateGameSchema = Joi.object({
     platformIds: Joi.array().items(Joi.string()),
     releaseDate: Joi.string().trim()
 });
+
+module.exports.validateGetGamesPagination = (req, res, next) => {
+    validateSchema(getGamesPaginationSchema, req.query);
+    next();
+}
+
+const getGamesPaginationSchema = Joi.object({
+    page: Joi.number().min(1).required()
+})
