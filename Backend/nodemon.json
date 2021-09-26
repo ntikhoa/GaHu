@@ -1,8 +1,0 @@
-{
-    "env": {
-        "SECRET_SIGNATURE": "Thisisaverylongsecretsignature",
-        "MONGO_USERNAME": "ntikhoa",
-        "MONGO_PASSWORD": "BHMwBSdpJc8VwplS",
-        "MONGO_DB_NAME": "game-info"
-    }
-}

@@ -1,5 +1,7 @@
 module.exports = {
     BASE_URL: 'https://gahu.herokuapp.com/',
+    MONGO_USERNAME: process.env.MONGO_USERNAME,
+    MONGO_PASSWORD: process.env.MONGO_PASSWORD,
     MONGO_DB_NAME: process.env.MONGO_DB_NAME,
     SECRET_SIGNATURE: process.env.SECRET_SIGNATURE,
     SALT: 12,
