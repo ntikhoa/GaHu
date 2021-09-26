@@ -1,6 +1,7 @@
 module.exports = {
-    BASE_URL: 'localhost:3000/',
-    SECRET_SIGNATURE: 'Thisisaverylongsecretsignature',
+    BASE_URL: 'https://gahu.herokuapp.com',
+    MONGO_DB_NAME: process.env.MONGO_DB_NAME,
+    SECRET_SIGNATURE: process.env.SECRET_SIGNATURE,
     SALT: 12,
     BAD_REQUEST: "Bad Request",
     NOT_FOUND: "Not Found",

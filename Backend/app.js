@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const helmet = require('helmet');
+const compression = require('compression');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
@@ -27,6 +29,9 @@ app.use('/user', userRoutes);
 app.use('/platforms', platformRoutes);
 app.use('/games', gameRoutes);
 
+app.use(helmet());
+app.use(compression());
+
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     var message = err.message;
@@ -45,7 +50,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-mongoose.connect('mongodb://localhost:27017/game-info',
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pv0tn.mongodb.net/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -54,10 +59,8 @@ mongoose.connect('mongodb://localhost:27017/game-info',
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'CONNECTION ERROR:'))
 db.once('open', () => {
-    console.log('CONNECTION OPEN')
-});
-
-
-app.listen(3000, () => {
-    console.log('LISTENING ON PORT 3K');
+    console.log('CONNECTION OPEN');
+    app.listen(process.env.PORT || 3000, () => {
+        console.log('LISTENING ON PORT 3K');
+    });
 });
