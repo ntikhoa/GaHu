@@ -9,6 +9,7 @@ const userRoutes = require('./routes/user');
 const platformRoutes = require('./routes/platform');
 const gameRoutes = require('./routes/game');
 const { removeImage } = require('./utils/removeImage');
+const Constants = require('./utils/Constants');
 
 
 const app = express();
