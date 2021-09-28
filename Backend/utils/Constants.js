@@ -1,5 +1,11 @@
+require('dotenv').config();
+
 module.exports = {
-    BASE_URL: 'https://gahu.herokuapp.com/',
+    IMAGE_BASE_URL: 'https://gahu.s3.ap-southeast-1.amazonaws.com/',
+    AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+    AWS_BUCKET_REGION: process.env.AWS_BUCKET_REGION,
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+    AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
     MONGO_USERNAME: process.env.MONGO_USERNAME,
     MONGO_PASSWORD: process.env.MONGO_PASSWORD,
     MONGO_DB_NAME: process.env.MONGO_DB_NAME,

@@ -1,8 +1,6 @@
-const mongoose = require('mongoose');
 const Constants = require("../utils/Constants");
 const Game = require('../models/game');
-const { removeImage } = require('../utils/removeImage');
-const ExpressError = require('../utils/ExpressError');
+const { uploadToS3, deleteFromS3 } = require('../utils/s3');
 
 module.exports.createGame = async (req, res, next) => {
     const { title, releaseDate, description } = req.body;
@@ -11,14 +9,16 @@ module.exports.createGame = async (req, res, next) => {
     const user = req.user;
     const file = req.file;
 
-    const imageUrl = file.path.replace("\\", '/');
+
+    const uploadedObject = await uploadToS3(file);
+    const imageUrl = uploadedObject.Location;
 
     const game = new Game({
         title: title,
         releaseDate: releaseDate,
         description: description,
         platforms: platformIdObjects,
-        image: imageUrl,
+        image: uploadedObject.Key,
         author: user._id
     });
 
@@ -32,7 +32,7 @@ module.exports.createGame = async (req, res, next) => {
             releaseDate: result.releaseDate,
             description: result.description,
             platforms: platforms,
-            image: Constants.BASE_URL + result.image,
+            image: imageUrl,
             author: {
                 id: user._id,
                 email: user.email,
@@ -58,7 +58,7 @@ module.exports.getGameDetail = async (req, res, next) => {
             releaseDate: game.releaseDate,
             description: game.description,
             platforms: game.platforms,
-            image: Constants.BASE_URL + game.image,
+            image: Constants.IMAGE_BASE_URL + game.image,
             author: game.author
         },
         error: null,
@@ -68,9 +68,8 @@ module.exports.getGameDetail = async (req, res, next) => {
 
 module.exports.deleteGame = async (req, res, next) => {
     const game = req.game;
-    removeImage(game.image);
     const result = await Game.findByIdAndRemove(game._id);
-    console.log(result);
+    await deleteFromS3(result.image);
     res.status(200).json({
         status: 200,
         data: {
@@ -101,9 +100,12 @@ module.exports.updateGame = async (req, res, next) => {
         game.platforms = platformIdObjects;
     }
     if (file) {
-        removeImage(game.image);
-        const imageUrl = file.path.replace("\\", '/');
-        game.image = imageUrl;
+        const deletePromise = deleteFromS3(game.image);
+        const uploadPromise = uploadToS3(file);
+
+        const uploadedObject = (await Promise.all([deletePromise, uploadPromise]))[1];
+
+        game.image = uploadedObject.Key;
     }
 
     await game.save();
@@ -120,7 +122,7 @@ module.exports.updateGame = async (req, res, next) => {
             releaseDate: game.releaseDate,
             description: game.description,
             platforms: platforms,
-            image: Constants.BASE_URL + game.image,
+            image: Constants.IMAGE_BASE_URL + game.image,
             author: game.author
         },
         error: null,
@@ -149,7 +151,7 @@ module.exports.getGames = async (req, res, next) => {
     }
 
     games = games.map(el => {
-        el.image = Constants.BASE_URL + el.image;
+        el.image = Constants.IMAGE_BASE_URL + el.image;
         return el;
     })
 
