@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const platformRoutes = require('./routes/platform');
 const gameRoutes = require('./routes/game');
+const Constants = require('./utils/Constants');
 
 
 const app = express();
@@ -43,7 +44,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-mongoose.connect(`mongodb+srv://${Constants.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.pv0tn.mongodb.net/${Constants.MONGO_DB_NAME}?retryWrites=true&w=majority`,
+mongoose.connect(`mongodb+srv://${Constants.MONGO_USERNAME}:${Constants.MONGO_PASSWORD}@cluster0.pv0tn.mongodb.net/${Constants.MONGO_DB_NAME}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
