@@ -17,7 +17,7 @@ module.exports.validateCreateGameBody = (req, res, next) => {
     if (!req.file) {
         throw new ExpressError('Image is not provided', Constants.BAD_REQUEST, 400);
     } else {
-        validateImageRatio(req.file.path.replace("\\", "/"));
+        validateImageRatio(req.file.buffer);
     }
 
     next();
@@ -107,7 +107,7 @@ module.exports.validateUpdateGameBody = (req, res, next) => {
         validateDateFormat(req.body.releaseDate);
     }
     if (req.file) {
-        validateImageRatio(req.file.path.replace("\\", "/"));
+        validateImageRatio(req.file.buffer);
     }
 
     next();

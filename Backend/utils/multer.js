@@ -1,16 +1,7 @@
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 const Constants = require('./Constants');
 
-const fileStorage = multer.diskStorage({
-    destination: (req, res, cb) => {
-        cb(null, 'images');
-    },
-    filename: (req, file, cb) => {
-        const fileExtension = file.originalname.split('.')[1];
-        cb(null, uuidv4() + '.' + fileExtension);
-    }
-})
+const fileStorage = multer.memoryStorage({});
 
 const fileFilter = (req, file, cb) => {
     const mimetype = file.mimetype;
