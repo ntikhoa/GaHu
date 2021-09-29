@@ -1,6 +1,7 @@
 const Constants = require("../utils/Constants");
 const Game = require('../models/game');
 const { uploadToS3, deleteFromS3 } = require('../utils/s3');
+const mongoose = require('mongoose');
 
 module.exports.createGame = async (req, res, next) => {
     const { title, releaseDate, description } = req.body;
@@ -132,14 +133,25 @@ module.exports.updateGame = async (req, res, next) => {
 }
 
 module.exports.getGames = async (req, res, next) => {
-    const { page } = req.query;
+    const { page, platformId } = req.query;
+    let games;
+    if (platformId) {
+        const platformIdObject = mongoose.Types.ObjectId(platformId);
 
-    let games = await Game.find({})
-        .skip((page - 1) * Constants.PER_PAGE)
-        .limit(Constants.PER_PAGE)
-        .select('title releaseDate description platforms image author')
-        .populate('platforms', 'name')
-        .populate('author', 'username email');
+        games = await Game.find({ "platforms": platformIdObject })
+            .skip((page - 1) * Constants.PER_PAGE)
+            .limit(Constants.PER_PAGE)
+            .select('title releaseDate description platforms image author')
+            .populate('platforms', 'name')
+            .populate('author', 'username email');
+    } else {
+        games = await Game.find({})
+            .skip((page - 1) * Constants.PER_PAGE)
+            .limit(Constants.PER_PAGE)
+            .select('title releaseDate description platforms image author')
+            .populate('platforms', 'name')
+            .populate('author', 'username email');
+    }
 
     if (!games || games.length == 0) {
         res.status(200).json({
@@ -159,7 +171,6 @@ module.exports.getGames = async (req, res, next) => {
         status: 200,
         data: {
             page: page,
-            perPage: Constants.PER_PAGE,
             games: games
         },
         error: null,

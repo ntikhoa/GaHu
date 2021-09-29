@@ -120,11 +120,22 @@ const updateGameSchema = Joi.object({
     releaseDate: Joi.string().trim()
 });
 
-module.exports.validateGetGamesPagination = (req, res, next) => {
+module.exports.validateGetGamesPagination = async (req, res, next) => {
     validateSchema(getGamesPaginationSchema, req.query);
+    const platformId = req.query.platformId;
+    if (platformId) {
+        if (!mongoose.Types.ObjectId.isValid(platformId)) {
+            throw new ExpressError("Invalid platform id", Constants.BAD_REQUEST, 400);
+        }
+        const platform = await Platform.findById(platformId);
+        if (!platform) {
+            throw new ExpressError("Platform not found", Constants.NOT_FOUND, 404);
+        }
+    }
     next();
 }
 
 const getGamesPaginationSchema = Joi.object({
-    page: Joi.number().min(1).required()
+    page: Joi.number().min(1).required(),
+    platformId: Joi.string()
 })

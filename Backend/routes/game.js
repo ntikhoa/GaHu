@@ -38,7 +38,7 @@ router.patch('/:id',
 
 router.get('/',
     catchAsync(isAuth),
-    validateGetGamesPagination,
+    catchAsync(validateGetGamesPagination),
     catchAsync(controller.getGames))
 
 module.exports = router;

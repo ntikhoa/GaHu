@@ -8,6 +8,7 @@ const userRoutes = require('./routes/user');
 const platformRoutes = require('./routes/platform');
 const gameRoutes = require('./routes/game');
 const Constants = require('./utils/Constants');
+const ExpressError = require('./utils/ExpressError');
 
 
 const app = express();
@@ -28,6 +29,10 @@ app.use('/games', gameRoutes);
 
 app.use(helmet());
 app.use(compression());
+
+app.use('*', (req, res, next) => {
+    throw new ExpressError("Endpoint not found", Constants.NOT_FOUND, 404)
+})
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
