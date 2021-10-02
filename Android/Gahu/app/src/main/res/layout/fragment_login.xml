@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".presentation.auth.login.LoginFragment">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/app_name"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="36sp" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/auth_horizontal_margin"
+            android:hint="@string/hint_email"
+            android:textColorHint="@color/text_color_hint"
+            app:boxBackgroundColor="@color/box_color"
+            app:boxCornerRadiusBottomEnd="@dimen/box_corner_radius"
+            app:boxCornerRadiusBottomStart="@dimen/box_corner_radius"
+            app:boxCornerRadiusTopEnd="@dimen/box_corner_radius"
+            app:boxCornerRadiusTopStart="@dimen/box_corner_radius"
+            app:boxStrokeColor="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="25dp"
+                android:textColor="@color/white" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/auth_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:hint="@string/hint_password"
+            android:textColorHint="@color/text_color_hint"
+            app:boxBackgroundColor="@color/box_color"
+            app:boxCornerRadiusBottomEnd="@dimen/box_corner_radius"
+            app:boxCornerRadiusBottomStart="@dimen/box_corner_radius"
+            app:boxCornerRadiusTopEnd="@dimen/box_corner_radius"
+            app:boxCornerRadiusTopStart="@dimen/box_corner_radius"
+            app:boxStrokeColor="@null"
+            app:hintTextColor="@color/text_color_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingVertical="25dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="top|center_horizontal"
+        android:orientation="vertical">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/auth_horizontal_margin"
+            android:paddingVertical="25dp"
+            android:text="@string/btn_login"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="#4175F1"
+            app:cornerRadius="@dimen/box_corner_radius" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/auth_horizontal_margin"
+            android:paddingVertical="25dp"
+            android:text="@string/btn_register"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="@dimen/box_corner_radius" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>
