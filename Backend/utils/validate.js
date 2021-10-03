@@ -1,10 +1,9 @@
 const ExpressError = require("./ExpressError");
-const Constants = require("./Constants");
 
 exports.validateSchema = (schema, body) => {
     const { error } = schema.validate(body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, Constants.BAD_REQUEST, 400);
+        throw new ExpressError(msg, 400);
     }
 }

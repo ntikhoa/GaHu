@@ -26,7 +26,6 @@ module.exports.createGame = async (req, res, next) => {
     const result = await game.save();
 
     res.status(201).json({
-        status: 201,
         data: {
             _id: result._id,
             title: result.title,
@@ -40,7 +39,6 @@ module.exports.createGame = async (req, res, next) => {
                 username: user.username
             }
         },
-        error: null,
         message: 'Create game successfully'
     });
 }
@@ -51,7 +49,6 @@ module.exports.getGameDetail = async (req, res, next) => {
     const isAuthor = req.user._id.equals(game.author._id);
 
     res.status(200).json({
-        status: 200,
         data: {
             isAuthor: isAuthor,
             id: game._id,
@@ -62,7 +59,6 @@ module.exports.getGameDetail = async (req, res, next) => {
             image: Constants.IMAGE_BASE_URL + game.image,
             author: game.author
         },
-        error: null,
         message: 'Get game details successfully'
     });
 }
@@ -72,11 +68,9 @@ module.exports.deleteGame = async (req, res, next) => {
     const result = await Game.findByIdAndRemove(game._id);
     await deleteFromS3(result.image);
     res.status(200).json({
-        status: 200,
         data: {
             id: result._id
         },
-        error: null,
         message: 'Delete successfully'
     });
 }
@@ -116,7 +110,6 @@ module.exports.updateGame = async (req, res, next) => {
     }
 
     res.status(201).json({
-        status: 201,
         data: {
             _id: game._id,
             title: game.title,
@@ -126,7 +119,6 @@ module.exports.updateGame = async (req, res, next) => {
             image: Constants.IMAGE_BASE_URL + game.image,
             author: game.author
         },
-        error: null,
         message: 'Update game successfully'
     });
 
@@ -155,9 +147,7 @@ module.exports.getGames = async (req, res, next) => {
 
     if (!games || games.length == 0) {
         res.status(200).json({
-            status: 200,
             data: null,
-            error: null,
             message: 'Exhausted'
         })
     }
@@ -168,12 +158,10 @@ module.exports.getGames = async (req, res, next) => {
     })
 
     res.status(200).json({
-        status: 200,
         data: {
             page: page,
             games: games
         },
-        error: null,
         message: 'Get games successfully'
     });
 }

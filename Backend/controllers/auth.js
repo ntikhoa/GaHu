@@ -20,14 +20,12 @@ module.exports.register = async (req, res, next) => {
     const token = createToken(result._id, currentTime);
 
     res.status(201).json({
-        status: 201,
         data: {
             token: token,
             id: result._id,
             email: result.email,
             username: result.username
         },
-        error: null,
         message: 'Register successfully'
     });
 }
@@ -38,14 +36,12 @@ module.exports.login = (req, res, next) => {
     const token = createToken(user._id, user.passwordChangedAt);
 
     res.status(200).json({
-        status: 200,
         data: {
             token: token,
             id: user._id,
             email: user.email,
             username: user.username
         },
-        error: null,
         message: 'Login successfully'
     });
 }
@@ -66,11 +62,9 @@ module.exports.changePassword = async (req, res, next) => {
     const token = createToken(user._id, currentTime);
 
     res.status(200).json({
-        status: 200,
         data: {
             token: token
         },
-        error: null,
         message: 'Change password successfully'
     });
 }

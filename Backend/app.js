@@ -31,22 +31,16 @@ app.use(helmet());
 app.use(compression());
 
 app.use('*', (req, res, next) => {
-    throw new ExpressError("Endpoint not found", Constants.NOT_FOUND, 404)
+    throw new ExpressError("Endpoint not found", 404)
 })
 
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     var message = err.message;
-    var error = err.error;
     console.log(message);
     if (statusCode == 500 || !message) message = "(500) Something went wrong in the server";
-    if (statusCode == 500 || !error) error = "Server errors"
-    res.status(statusCode).json({
-        status: statusCode,
-        data: null,
-        error: error,
-        message: message
-    });
+    res.status(statusCode).send(message)
+
 });
 
 mongoose.connect(`mongodb+srv://${Constants.MONGO_USERNAME}:${Constants.MONGO_PASSWORD}@cluster0.pv0tn.mongodb.net/${Constants.MONGO_DB_NAME}?retryWrites=true&w=majority`,

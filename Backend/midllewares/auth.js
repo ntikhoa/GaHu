@@ -28,7 +28,7 @@ module.exports.checkRegisteredUserByEmail = async (req, res, next) => {
     const email = req.body.email;
     const user = await User.findOne({ email: email });
     if (user) {
-        throw new ExpressError("Email already exist", Constants.BAD_REQUEST, 400);
+        throw new ExpressError("Email already exist", 400);
     }
     next();
 }
@@ -38,7 +38,7 @@ module.exports.isEmailExist = async (req, res, next) => {
 
     const user = await User.findOne({ email: email });
     if (!user) {
-        throw new ExpressError('Email does not exist', Constants.NOT_FOUND, 404);
+        throw new ExpressError('Email does not exist', 404);
     }
     req.user = user;
     next();
@@ -50,7 +50,7 @@ module.exports.isPasswordCorrect = async (req, res, next) => {
 
     const isEqual = await bcrypt.compare(password, user.password);
     if (!isEqual) {
-        throw new ExpressError('Wrong password', Constants.UNAUTHORIZED, 401);
+        throw new ExpressError('Wrong password', 401);
     }
     next();
 }
@@ -63,9 +63,7 @@ module.exports.isNewPasswordConfirmMatched = (req, res, next) => {
 
 function checkPasswordConfirmation(password, confirmPassword) {
     if (password !== confirmPassword) {
-        throw new ExpressError('Confirm password is not matched with password',
-            Constants.BAD_REQUEST,
-            300);
+        throw new ExpressError('Confirm password is not matched with password', 400);
     }
 }
 
@@ -78,23 +76,23 @@ module.exports.validateNewPassword = (req, res, next) => {
 module.exports.isAuth = async (req, res, next) => {
     const authHeader = req.get('Authorization');
     if (!authHeader) {
-        throw new ExpressError('Not authenticated', Constants.UNAUTHORIZED, 401);
+        throw new ExpressError('Not authenticated', 401);
     }
     const bearer = authHeader.split(' ')[0];
     const token = authHeader.split(' ')[1];
     if (!token || bearer !== 'Bearer') {
-        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Invalid token', 400);
     }
     decodedToken = jwt.verify(token, Constants.SECRET_SIGNATURE);
 
     const user = await User.findById(decodedToken.userId);
     if (!user) {
         console.log('cannot find user');
-        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Invalid token', 400);
     }
     if (decodedToken.createdAt !== user.passwordChangedAt) {
         console.log('password change');
-        throw new ExpressError('Invalid token', Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Invalid token', 400);
     }
 
     req.user = user;
@@ -104,7 +102,7 @@ module.exports.isAuth = async (req, res, next) => {
 module.exports.isAdmin = (req, res, next) => {
     const user = req.user;
     if (!Constants.ADMIN_EMAILS.includes(user.email)) {
-        throw new ExpressError('Only admin can use this feature', Constants.FORBIDDEN, 403);
+        throw new ExpressError('Only admin can use this feature', 403);
     }
     next();
 }

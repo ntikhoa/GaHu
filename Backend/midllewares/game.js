@@ -15,7 +15,7 @@ module.exports.validateCreateGameBody = (req, res, next) => {
         validateDateFormat(req.body.releaseDate);
     }
     if (!req.file) {
-        throw new ExpressError('Image is not provided', Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Image is not provided', 400);
     } else {
         validateImageRatio(req.file.buffer);
     }
@@ -32,8 +32,7 @@ const createGameSchema = Joi.object({
 
 const validateDateFormat = (date) => {
     if (!moment(date, 'YYYY-MM-DD', true).isValid()) {
-        throw new ExpressError('Invalid date format YYYY-MM-DD',
-            Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Invalid date format YYYY-MM-DD', 400);
     }
 }
 
@@ -42,7 +41,7 @@ const validateImageRatio = (imagePath) => {
     const ratio = imageDimension.width / imageDimension.height;
     if (ratio < (Constants.IMAGE_RATIO - 0.2)
         || ratio > (Constants.IMAGE_RATIO + 0.2)) {
-        throw new ExpressError('Invalid image ratio', Constants.BAD_REQUEST, 400);
+        throw new ExpressError('Invalid image ratio', 400);
     }
 }
 
@@ -51,7 +50,7 @@ module.exports.validatePlatformIds = async (req, res, next) => {
     if (platformIds) {
         for (const platformId of platformIds) {
             if (!mongoose.Types.ObjectId.isValid(platformId)) {
-                throw new ExpressError("Invalid platform ids", Constants.BAD_REQUEST, 400);
+                throw new ExpressError("Invalid platform ids", 400);
             }
         }
         const platformIdObjects = platformIds.map(el => {
@@ -65,7 +64,7 @@ module.exports.validatePlatformIds = async (req, res, next) => {
             .exec();
 
         if (result.length < platformIds.length) {
-            throw new ExpressError("Platforms not found", Constants.NOT_FOUND, 404);
+            throw new ExpressError("Platforms not found", 404);
         }
 
         req.platformIdObjects = platformIdObjects;
@@ -78,14 +77,14 @@ module.exports.validateGetGameDetail = async (req, res, next) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new ExpressError("Invalid game id", Constants.BAD_REQUEST, 400);
+        throw new ExpressError("Invalid game id", 400);
     }
 
     const game = await Game.findById(id)
         .populate('platforms', 'name')
         .populate('author', 'username email');
     if (!game) {
-        throw new ExpressError("Game not found", Constants.NOT_FOUND, 404);
+        throw new ExpressError("Game not found", 404);
     }
     req.game = game;
     next();
@@ -96,7 +95,7 @@ module.exports.isGameAuthor = (req, res, next) => {
     const user = req.user;
     const game = req.game;
     if (!game.author._id.equals(user._id)) {
-        throw new ExpressError("Not allowed", Constants.FORBIDDEN, 403);
+        throw new ExpressError("Not allowed", 403);
     }
     next();
 }
@@ -125,11 +124,11 @@ module.exports.validateGetGamesPagination = async (req, res, next) => {
     const platformId = req.query.platformId;
     if (platformId) {
         if (!mongoose.Types.ObjectId.isValid(platformId)) {
-            throw new ExpressError("Invalid platform id", Constants.BAD_REQUEST, 400);
+            throw new ExpressError("Invalid platform id", 400);
         }
         const platform = await Platform.findById(platformId);
         if (!platform) {
-            throw new ExpressError("Platform not found", Constants.NOT_FOUND, 404);
+            throw new ExpressError("Platform not found", 404);
         }
     }
     next();
