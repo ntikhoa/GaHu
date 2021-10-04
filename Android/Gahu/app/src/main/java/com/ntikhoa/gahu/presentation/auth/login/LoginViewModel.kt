@@ -40,7 +40,7 @@ constructor(
                         this.state.value = state.copy(isLoading = dataState.isLoading)
 
                         dataState.data?.let { account ->
-                            sessionManager.token = account.token
+                            sessionManager.token = "Bearer ${account.token}"
                         }
 
                         dataState.message?.let { message ->
