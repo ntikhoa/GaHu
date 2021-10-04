@@ -11,7 +11,7 @@ data class DataState<T>(
         fun <T> error(
             message: String
         ): DataState<T> {
-            return error(
+            return DataState(
                 message = message
             )
         }
