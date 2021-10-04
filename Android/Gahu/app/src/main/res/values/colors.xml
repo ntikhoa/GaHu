@@ -11,4 +11,5 @@
     <color name="background">#181A1F</color>
     <color name="box_color">#272A33</color>
     <color name="text_color_hint">#6C6D71</color>
+    <color name="red_error">#EC3939</color>
 </resources>

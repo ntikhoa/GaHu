@@ -6,15 +6,15 @@ import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.util.DataState
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
+import com.ntikhoa.gahu.presentation.session.SessionManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class Login(
     private val authService: GahuAuthService,
-    private val accountDao: AccountDao,
-
-    ) {
+    private val accountDao: AccountDao
+) {
     fun execute(
         email: String,
         password: String
@@ -31,9 +31,6 @@ class Login(
 
             accountDao.insertOrReplace(accountEntity)
 
-            val result = accountDao.searchByPk(account.id)
-            println("localdb: $result")
-
             emit(
                 DataState.data(
                     message = loginResponse.message,
@@ -42,7 +39,6 @@ class Login(
             )
         }
     }.catch { e ->
-        println("Exception throw")
         emit(handleUseCaseException(e))
     }
 }

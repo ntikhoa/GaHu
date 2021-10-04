@@ -1,19 +1,24 @@
 package com.ntikhoa.gahu.presentation.auth.login
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ntikhoa.gahu.MainActivity
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.EMAIL_NOT_EXIST
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.WRONG_PASSWORD
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGIN_SUCCESSFULLY
 import com.ntikhoa.gahu.databinding.FragmentLoginBinding
+import com.ntikhoa.gahu.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 
 @AndroidEntryPoint
-class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
+class LoginFragment :
+    BaseFragment(R.layout.fragment_login),
+    View.OnClickListener {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -24,7 +29,42 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
 
+        subscribeObserver()
         setBtnOnClickListener()
+    }
+
+    private fun subscribeObserver() {
+        viewModel.state.observe(viewLifecycleOwner, Observer { loginState ->
+            displayProgressBar(loginState.isLoading)
+
+            loginState.message?.let {
+                handleMessage(it)
+            }
+        })
+    }
+
+    private fun handleMessage(message: String) {
+        when (message) {
+            LOGIN_SUCCESSFULLY -> {
+                goToMainActivity()
+            }
+            EMAIL_NOT_EXIST -> {
+                showError(EMAIL_NOT_EXIST)
+            }
+            WRONG_PASSWORD -> {
+                showError(WRONG_PASSWORD)
+            }
+        }
+    }
+
+    private fun goToMainActivity() {
+        startActivity(Intent(activity, MainActivity::class.java))
+    }
+
+
+    private fun showError(error: String) {
+        binding.tvError.visibility = View.VISIBLE
+        binding.tvError.text = error
     }
 
     private fun setBtnOnClickListener() {
@@ -34,28 +74,41 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
         }
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btn_login -> {
-                viewModel.onTriggerEvent(
-                    LoginEvent.Login(
-                        binding.etEmail.text.toString(),
-                        binding.etPassword.text.toString()
+                if (isValidInput()) {
+                    viewModel.onTriggerEvent(
+                        LoginEvent.Login(
+                            binding.etEmail.text.toString(),
+                            binding.etPassword.text.toString()
+                        )
                     )
-                )
+                }
             }
             R.id.btn_register -> {
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
-            else -> {
-                throw Exception("Button id is not handle")
-            }
         }
+    }
+
+    private fun isValidInput(): Boolean {
+        binding.apply {
+            var isValid = true
+            if (etEmail.text.isNullOrBlank()) {
+                etEmail.error = "Email cannot be blank"
+                isValid = false
+            }
+            if (etPassword.text.isNullOrBlank()) {
+                etPassword.error = "Password cannot be blank"
+                isValid = false
+            }
+            return isValid
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

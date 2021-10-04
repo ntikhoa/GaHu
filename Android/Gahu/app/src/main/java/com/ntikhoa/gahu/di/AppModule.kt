@@ -8,6 +8,7 @@ import com.ntikhoa.gahu.business.datasource.cache.AppDatabase
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.util.Constants
+import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,5 +63,11 @@ object AppModule {
     @Singleton
     fun provideAuthService(retrofitBuilder: Retrofit.Builder): GahuAuthService {
         return retrofitBuilder.build().create(GahuAuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSessionManager(): SessionManager {
+        return SessionManager()
     }
 }

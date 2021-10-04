@@ -75,6 +75,19 @@
                 android:textColor="@color/white" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textColor="@color/red_error"
+            android:textSize="16sp"
+            android:visibility="gone"
+            tools:text="Wrong Password"
+            tools:visibility="visible" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat

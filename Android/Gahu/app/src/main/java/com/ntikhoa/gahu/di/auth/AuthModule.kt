@@ -3,6 +3,7 @@ package com.ntikhoa.gahu.di.auth
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.interactor.auth.Login
+import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,13 @@ object AuthModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideLogin(authService: GahuAuthService, accountDao: AccountDao): Login {
-        return Login(authService, accountDao)
+    fun provideLogin(
+        authService: GahuAuthService,
+        accountDao: AccountDao
+    ): Login {
+        return Login(
+            authService = authService,
+            accountDao = accountDao
+        )
     }
 }
