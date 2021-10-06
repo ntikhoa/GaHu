@@ -7,6 +7,7 @@ import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.interactor.auth.Login
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
@@ -22,6 +23,8 @@ constructor(
 
     val state: MutableLiveData<LoginState> = MutableLiveData(LoginState())
 
+    private var loginJob: Job? = null
+
     fun onTriggerEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.Login -> {
@@ -32,14 +35,15 @@ constructor(
 
     private fun login(email: String, password: String) {
         try {
+            loginJob?.cancel()
             validateLoginInput(email, password)
             state.value?.let { state ->
-                login.execute(email, password)
+                loginJob = login.execute(email, password)
                     .onEach { dataState ->
-                        println(dataState.isLoading)
                         this.state.value = state.copy(isLoading = dataState.isLoading)
 
                         dataState.data?.let { account ->
+                            println("dataState: ${account.token}")
                             sessionManager.token = "Bearer ${account.token}"
                         }
 
@@ -47,6 +51,11 @@ constructor(
                             this.state.value = state.copy(message = message)
                         }
                     }.launchIn(viewModelScope)
+
+                loginJob?.invokeOnCompletion {
+                    println("login job cancelled")
+                }
+
             }
         } catch (e: Exception) {
             println(e.message ?: Constants.UNKNOWN_ERROR)
@@ -60,5 +69,14 @@ constructor(
         if (password.isBlank()) {
             throw Exception("Password cannot be blank")
         }
+    }
+
+    fun cancelJob() {
+        loginJob?.cancel()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loginJob?.cancel()
     }
 }

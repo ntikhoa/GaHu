@@ -109,6 +109,7 @@ class LoginFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.cancelJob()
         _binding = null
     }
 }
