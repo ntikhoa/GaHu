@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountEntity
 import com.ntikhoa.gahu.business.domain.model.Account
 
-data class LoginResponse(
+data class AuthResponse(
     @SerializedName("token")
     @Expose
     var token: String,
