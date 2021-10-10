@@ -8,6 +8,7 @@ import com.ntikhoa.gahu.business.domain.util.DataState
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -18,6 +19,8 @@ class CheckPrevAuth(
 ) {
     operator fun invoke(): Flow<DataState<Account>> = flow {
         emit(DataState.loading())
+
+        delay(2000)
 
         val email = appDataStore.readValue(Constants.DATASTORE_KEY_EMAIL)
         if (email == ErrorHandler.DATASTORE_VALUE_NOT_FOUND) {
