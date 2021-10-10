@@ -1,17 +1,23 @@
 package com.ntikhoa.gahu.di
 
 import android.app.Application
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ntikhoa.gahu.business.datasource.cache.AppDatabase
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
+import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
+import com.ntikhoa.gahu.business.datasource.datastore.AppDataStoreImpl
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,15 +39,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRetrofitBuilder(gson: Gson): Retrofit.Builder {
-        val okHttpClient = OkHttpClient.Builder()
-            .readTimeout(60, TimeUnit.SECONDS)
-            .connectTimeout(60, TimeUnit.SECONDS)
-            .build()
-
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
     }
 
     @Provides
@@ -69,5 +69,13 @@ object AppModule {
     @Singleton
     fun provideSessionManager(): SessionManager {
         return SessionManager()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStore(
+        app: Application
+    ): AppDataStore {
+        return AppDataStoreImpl(app)
     }
 }

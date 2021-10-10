@@ -1,19 +1,20 @@
 package com.ntikhoa.gahu.business.interactor.auth
 
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
-import com.ntikhoa.gahu.business.datasource.cache.account.AccountEntity
+import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.model.Account
+import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.domain.util.DataState
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
-import com.ntikhoa.gahu.presentation.session.SessionManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class Login(
     private val authService: GahuAuthService,
-    private val accountDao: AccountDao
+    private val accountDao: AccountDao,
+    private val appDataStore: AppDataStore
 ) {
     operator fun invoke(
         email: String,
@@ -30,6 +31,8 @@ class Login(
             val accountEntity = account.toEntity()
 
             accountDao.insertOrReplace(accountEntity)
+
+            appDataStore.setValue(Constants.DATASTORE_KEY_EMAIL, account.email)
 
             emit(
                 DataState.data(

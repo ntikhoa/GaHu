@@ -92,5 +92,7 @@ dependencies {
     def image_cropper_version = "2.8+"
     api "com.theartofdev.edmodo:android-image-cropper:$image_cropper_version"
 
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    //data store
+    def datastore = "1.0.0"
+    implementation "androidx.datastore:datastore-preferences:$datastore"
 }

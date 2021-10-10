@@ -8,8 +8,8 @@ import androidx.room.Query
 @Dao
 interface AccountDao {
 
-    @Query("SELECT * FROM accounts WHERE pk = :pk")
-    suspend fun searchByPk(pk: String): AccountEntity
+    @Query("SELECT * FROM accounts WHERE email = :email")
+    suspend fun searchByEmail(email: String): AccountEntity?
 
     @Insert(onConflict = REPLACE)
     suspend fun insertOrReplace(account: AccountEntity): Long

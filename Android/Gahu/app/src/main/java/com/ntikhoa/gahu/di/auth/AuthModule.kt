@@ -1,7 +1,9 @@
 package com.ntikhoa.gahu.di.auth
 
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
+import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
+import com.ntikhoa.gahu.business.interactor.auth.CheckPrevAuth
 import com.ntikhoa.gahu.business.interactor.auth.Login
 import com.ntikhoa.gahu.business.interactor.auth.Register
 import com.ntikhoa.gahu.presentation.session.SessionManager
@@ -22,11 +24,13 @@ object AuthModule {
     @ActivityRetainedScoped
     fun provideLogin(
         authService: GahuAuthService,
-        accountDao: AccountDao
+        accountDao: AccountDao,
+        appDataStore: AppDataStore
     ): Login {
         return Login(
             authService = authService,
-            accountDao = accountDao
+            accountDao = accountDao,
+            appDataStore = appDataStore
         )
     }
 
@@ -34,11 +38,25 @@ object AuthModule {
     @ActivityRetainedScoped
     fun provideRegister(
         authService: GahuAuthService,
-        accountDao: AccountDao
+        accountDao: AccountDao,
+        appDataStore: AppDataStore
     ): Register {
         return Register(
             authService = authService,
-            accountDao = accountDao
+            accountDao = accountDao,
+            appDataStore = appDataStore
+        )
+    }
+
+    @Provides
+    @ActivityRetainedScoped
+    fun provideCheckPrevAuth(
+        accountDao: AccountDao,
+        appDataStore: AppDataStore
+    ): CheckPrevAuth {
+        return CheckPrevAuth(
+            accountDao = accountDao,
+            appDataStore = appDataStore
         )
     }
 }
