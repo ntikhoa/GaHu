@@ -7,4 +7,6 @@
     <string name="btn_register">Register</string>
     <string name="register">Register</string>
     <string name="hint_username">Username</string>
+    <string name="home">Home</string>
+    <string name="account">Account</string>
 </resources>

@@ -6,11 +6,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.ntikhoa.gahu.MainActivity
+import com.ntikhoa.gahu.presentation.MainActivity
 import com.ntikhoa.gahu.R
-import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.CHECK_PREV_AUTH_FAILED
-import com.ntikhoa.gahu.business.domain.util.SuccessHandler
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.CHECK_PREV_AUTH_SUCCESSFULLY
 import com.ntikhoa.gahu.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

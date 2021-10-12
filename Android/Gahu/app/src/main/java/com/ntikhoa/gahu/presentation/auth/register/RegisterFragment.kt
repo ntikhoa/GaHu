@@ -2,15 +2,13 @@ package com.ntikhoa.gahu.presentation.auth.register
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.ntikhoa.gahu.MainActivity
+import com.ntikhoa.gahu.presentation.MainActivity
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.EMAIL_ALREADY_EXIST
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.REGISTER_SUCCESSFULLY
-import com.ntikhoa.gahu.business.interactor.util.isValidEmail
 import com.ntikhoa.gahu.databinding.FragmentRegisterBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
