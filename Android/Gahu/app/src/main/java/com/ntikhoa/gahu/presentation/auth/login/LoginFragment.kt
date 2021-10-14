@@ -11,6 +11,7 @@ import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.EMAIL_NOT_EXIST
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.WRONG_PASSWORD
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGIN_SUCCESSFULLY
+import com.ntikhoa.gahu.business.interactor.util.isValidEmail
 import com.ntikhoa.gahu.databinding.FragmentLoginBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint

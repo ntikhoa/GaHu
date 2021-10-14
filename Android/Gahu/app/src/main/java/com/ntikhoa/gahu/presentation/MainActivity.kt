@@ -1,10 +1,12 @@
 package com.ntikhoa.gahu.presentation
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.databinding.ActivityMainBinding
 import com.ntikhoa.gahu.presentation.session.SessionManager
@@ -30,7 +32,8 @@ class MainActivity : BaseActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.main_fragment_container) as NavHostFragment
         navController = navHostFragment.navController
-        binding.bottomNavigationView.setupWithNavController(navController)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setupWithNavController(navController)
 
     }
 

@@ -9,4 +9,6 @@
     <string name="hint_username">Username</string>
     <string name="home">Home</string>
     <string name="account">Account</string>
+    <string name="btn_logout">Logout</string>
+    <string name="tv_change_password">Change password</string>
 </resources>
