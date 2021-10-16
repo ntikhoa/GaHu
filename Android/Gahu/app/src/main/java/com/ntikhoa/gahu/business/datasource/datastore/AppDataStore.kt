@@ -9,4 +9,6 @@ interface AppDataStore {
     )
 
     suspend fun readValue(key: String): String
+
+    suspend fun clear()
 }

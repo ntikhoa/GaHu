@@ -115,7 +115,6 @@ class LoginFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        displayProgressBar(false)
         viewModel.cancelJob()
         _binding = null
     }

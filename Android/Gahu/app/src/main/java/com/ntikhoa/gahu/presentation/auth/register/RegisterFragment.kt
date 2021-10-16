@@ -72,7 +72,6 @@ class RegisterFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        displayProgressBar(false)
         viewModel.cancelJob()
         _binding = null
     }

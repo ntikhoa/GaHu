@@ -9,4 +9,9 @@ abstract class BaseFragment(@LayoutRes val layoutRes: Int) : Fragment(layoutRes)
     fun displayProgressBar(isVisible: Boolean) {
         (activity as BaseActivity).displayProgressBar(isVisible)
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        displayProgressBar(false)
+    }
 }

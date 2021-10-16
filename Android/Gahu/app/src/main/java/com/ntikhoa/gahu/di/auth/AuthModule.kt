@@ -5,6 +5,7 @@ import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.interactor.auth.CheckPrevAuth
 import com.ntikhoa.gahu.business.interactor.auth.Login
+import com.ntikhoa.gahu.business.interactor.auth.Logout
 import com.ntikhoa.gahu.business.interactor.auth.Register
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
@@ -55,6 +56,18 @@ object AuthModule {
         appDataStore: AppDataStore
     ): CheckPrevAuth {
         return CheckPrevAuth(
+            accountDao = accountDao,
+            appDataStore = appDataStore
+        )
+    }
+
+    @Provides
+    @ActivityRetainedScoped
+    fun provideLogout(
+        accountDao: AccountDao,
+        appDataStore: AppDataStore
+    ): Logout {
+        return Logout(
             accountDao = accountDao,
             appDataStore = appDataStore
         )

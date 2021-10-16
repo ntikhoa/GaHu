@@ -1,11 +1,12 @@
-package com.ntikhoa.gahu.presentation.auth.login
+package com.ntikhoa.gahu.presentation.account
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ntikhoa.gahu.business.domain.util.Constants
-import com.ntikhoa.gahu.business.interactor.auth.Login
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGOUT_SUCCESSFULLY
+import com.ntikhoa.gahu.business.interactor.auth.Logout
 import com.ntikhoa.gahu.presentation.CancelJob
 import com.ntikhoa.gahu.presentation.OnTriggerEvent
 import com.ntikhoa.gahu.presentation.session.SessionManager
@@ -13,51 +14,55 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.lang.Exception
 import javax.inject.Inject
 
+
 @HiltViewModel
-class LoginViewModel
+class AccountViewModel
 @Inject
 constructor(
-    private val loginUseCase: Login,
+    private val logoutUseCase: Logout,
     private val sessionManager: SessionManager
-) : ViewModel(), OnTriggerEvent<LoginEvent>, CancelJob {
+) : ViewModel(),
+    CancelJob,
+    OnTriggerEvent<AccountEvent> {
 
-    private val _state: MutableLiveData<LoginState> = MutableLiveData(LoginState())
-    val state: LiveData<LoginState> get() = _state
+    private val _state: MutableLiveData<AccountState> = MutableLiveData(AccountState())
+    val state: LiveData<AccountState> get() = _state
 
-    private var loginJob: Job? = null
+    private var logoutJob: Job? = null
 
-    override fun onTriggerEvent(event: LoginEvent) {
+    override fun onTriggerEvent(event: AccountEvent) {
         when (event) {
-            is LoginEvent.Login -> {
-                login(event.email, event.password)
+            is AccountEvent.Logout -> {
+                logout()
             }
         }
     }
 
-    private fun login(email: String, password: String) {
+    private fun logout() {
         _state.value?.let { state ->
-            loginJob?.cancel()
-            loginJob = loginUseCase(email, password)
+            logoutJob?.cancel()
+            logoutJob = logoutUseCase()
                 .onEach { dataState ->
                     this._state.value = state.copy(isLoading = dataState.isLoading)
 
-                    dataState.data?.let { account ->
-                        sessionManager.token = "Bearer ${account.token}"
+                    dataState.data?.let {
+
                     }
 
                     dataState.message?.let { message ->
+                        if (message == LOGOUT_SUCCESSFULLY) {
+                            sessionManager.token = null
+                        }
                         this._state.value = state.copy(message = message)
                     }
                 }.launchIn(viewModelScope)
-
         }
     }
 
     override fun cancelJob() {
-        loginJob?.cancel()
+        logoutJob?.cancel()
     }
 
     override fun onCleared() {

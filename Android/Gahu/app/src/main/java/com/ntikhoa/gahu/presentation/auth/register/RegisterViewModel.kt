@@ -45,8 +45,8 @@ constructor(
         password: String,
         confirmPassword: String
     ) {
-        registerJob?.cancel()
         _state.value?.let { state ->
+            registerJob?.cancel()
             registerJob = registerUseCase(
                 email,
                 username,
