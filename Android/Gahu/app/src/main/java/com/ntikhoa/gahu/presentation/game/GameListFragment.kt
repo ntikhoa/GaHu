@@ -11,4 +11,7 @@ import com.ntikhoa.gahu.presentation.BaseFragment
 
 class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
 
+    init {
+        fragmentName = "GameList"
+    }
 }

@@ -3,23 +3,36 @@ package com.ntikhoa.gahu.presentation.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.util.Constants.Companion.EXTRA_LOGIN
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.NETWORK_ERROR
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGOUT_SUCCESSFULLY
 import com.ntikhoa.gahu.databinding.FragmentAccountBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
 import com.ntikhoa.gahu.presentation.auth.AuthActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountFragment : BaseFragment(R.layout.fragment_account), View.OnClickListener {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
+
+    init {
+        fragmentName = "Account"
+    }
 
     private val viewModel: AccountViewModel by viewModels()
 
@@ -29,6 +42,12 @@ class AccountFragment : BaseFragment(R.layout.fragment_account), View.OnClickLis
 
         subscribeObserver()
         setOnClick()
+
+        getAccount()
+    }
+
+    private fun getAccount() {
+        viewModel.onTriggerEvent(AccountEvent.GetAccount())
     }
 
     private fun setOnClick() {
@@ -39,13 +58,29 @@ class AccountFragment : BaseFragment(R.layout.fragment_account), View.OnClickLis
 
     private fun subscribeObserver() {
         viewModel.state.observe(viewLifecycleOwner, Observer { dataState ->
+
+            println("fragment: ${dataState.isLoading}")
+            displayProgressBar(dataState.isLoading)
+
+            dataState.account?.let { account ->
+                setAccountView(account)
+            }
+
             dataState.message?.let { message ->
                 handleMessage(message)
             }
         })
     }
 
-    private fun handleMessage(message: String) {
+    private fun setAccountView(account: Account) {
+        binding.apply {
+            tvEmail.text = account.email
+            tvUsername.text = account.username
+        }
+    }
+
+    override fun handleMessage(message: String) {
+        super.handleMessage(message)
         when (message) {
             LOGOUT_SUCCESSFULLY -> {
                 gotoLogin()

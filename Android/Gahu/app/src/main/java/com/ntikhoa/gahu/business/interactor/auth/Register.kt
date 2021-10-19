@@ -6,6 +6,8 @@ import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.domain.util.DataState
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.REGISTER_SUCCESSFULLY
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -36,11 +38,10 @@ constructor(
 
             emit(
                 DataState.data(
-                    message = response.message,
+                    message = REGISTER_SUCCESSFULLY,
                     data = account
                 )
             )
-            return@flow
         }
     }.catch { e ->
         emit(handleUseCaseException(e))

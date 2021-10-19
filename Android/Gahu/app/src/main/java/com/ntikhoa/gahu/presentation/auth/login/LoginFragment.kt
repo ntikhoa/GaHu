@@ -8,7 +8,9 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ntikhoa.gahu.presentation.MainActivity
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.EMAIL_NOT_EXIST
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.NETWORK_ERROR
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.WRONG_PASSWORD
 import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGIN_SUCCESSFULLY
 import com.ntikhoa.gahu.business.interactor.util.isValidEmail
@@ -21,6 +23,10 @@ class LoginFragment :
     BaseFragment(R.layout.fragment_login),
     View.OnClickListener {
 
+    init {
+        fragmentName = "Login"
+    }
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -29,6 +35,7 @@ class LoginFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentLoginBinding.bind(view)
+
 
         subscribeObserver()
         setBtnOnClickListener()
@@ -44,7 +51,8 @@ class LoginFragment :
         })
     }
 
-    private fun handleMessage(message: String) {
+    override fun handleMessage(message: String) {
+        super.handleMessage(message)
         when (message) {
             LOGIN_SUCCESSFULLY -> {
                 goToMainActivity()

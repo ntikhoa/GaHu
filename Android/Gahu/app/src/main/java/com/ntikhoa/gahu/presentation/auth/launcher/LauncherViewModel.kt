@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.ntikhoa.gahu.business.interactor.auth.CheckPrevAuth
 import com.ntikhoa.gahu.presentation.CancelJob
 import com.ntikhoa.gahu.presentation.OnTriggerEvent
-import com.ntikhoa.gahu.presentation.auth.register.RegisterState
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job

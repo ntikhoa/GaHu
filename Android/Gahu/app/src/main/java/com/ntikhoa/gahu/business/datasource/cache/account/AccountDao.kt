@@ -12,6 +12,9 @@ interface AccountDao {
     @Query("SELECT * FROM accounts WHERE email = :email")
     suspend fun searchByEmail(email: String): AccountEntity?
 
+    @Query("SELECT * FROM accounts WHERE token = :token")
+    suspend fun getAccount(token: String): AccountEntity?
+
     @Insert(onConflict = REPLACE)
     suspend fun insertOrReplace(account: AccountEntity): Long
 

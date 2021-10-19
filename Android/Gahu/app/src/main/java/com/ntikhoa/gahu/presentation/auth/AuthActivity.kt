@@ -2,9 +2,11 @@ package com.ntikhoa.gahu.presentation.auth
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.navigation.findNavController
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.util.Constants
+import com.ntikhoa.gahu.business.domain.util.Constants.Companion.NETWORK_ERROR_MSG
 import com.ntikhoa.gahu.databinding.ActivityAuthBinding
 import com.ntikhoa.gahu.presentation.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint

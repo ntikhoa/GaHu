@@ -18,7 +18,7 @@ data class DataState<T>(
 
 
         fun <T> data(
-            message: String?,
+            message: String? = null,
             data: T? = null
         ): DataState<T> {
             return DataState(

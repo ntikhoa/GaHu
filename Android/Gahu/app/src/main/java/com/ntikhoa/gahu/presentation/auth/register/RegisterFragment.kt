@@ -19,6 +19,10 @@ class RegisterFragment :
     BaseFragment(R.layout.fragment_register),
     View.OnClickListener {
 
+    init {
+        fragmentName = "Register"
+    }
+
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
@@ -43,7 +47,8 @@ class RegisterFragment :
         })
     }
 
-    private fun handleMessage(message: String) {
+    override fun handleMessage(message: String) {
+        super.handleMessage(message)
         when (message) {
             REGISTER_SUCCESSFULLY -> {
                 gotoMainActivity()

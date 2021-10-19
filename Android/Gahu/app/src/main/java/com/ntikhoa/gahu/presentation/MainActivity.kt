@@ -1,13 +1,14 @@
 package com.ntikhoa.gahu.presentation
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.databinding.ActivityMainBinding
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.hilt.android.AndroidEntryPoint

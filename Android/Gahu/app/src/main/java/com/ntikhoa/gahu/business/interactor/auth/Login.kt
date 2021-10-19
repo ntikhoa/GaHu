@@ -6,6 +6,8 @@ import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.domain.util.DataState
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler
+import com.ntikhoa.gahu.business.domain.util.SuccessHandler.Companion.LOGIN_SUCCESSFULLY
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -36,7 +38,7 @@ class Login(
 
             emit(
                 DataState.data(
-                    message = loginResponse.message,
+                    message = LOGIN_SUCCESSFULLY,
                     data = account
                 )
             )

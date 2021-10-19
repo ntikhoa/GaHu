@@ -31,8 +31,9 @@ class LauncherFragment : BaseFragment(R.layout.fragment_launcher) {
         })
     }
 
-    private fun handleMessage(it: String) {
-        when (it) {
+    override fun handleMessage(message: String) {
+        super.handleMessage(message)
+        when (message) {
             CHECK_PREV_AUTH_SUCCESSFULLY -> {
                 startActivity(Intent(context, MainActivity::class.java))
                 activity?.finish()

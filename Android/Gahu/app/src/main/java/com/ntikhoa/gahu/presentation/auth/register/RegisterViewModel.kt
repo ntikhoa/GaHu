@@ -56,7 +56,7 @@ constructor(
                 this._state.value = state.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { data ->
-                    sessionManager.token = "Bearer ${data.token}"
+                    sessionManager.token = data.token
                 }
 
                 dataState.message?.let { message ->
@@ -69,6 +69,9 @@ constructor(
 
     override fun cancelJob() {
         registerJob?.cancel()
+        _state.value?.let { state ->
+            this._state.value = state.copy(isLoading = false)
+        }
     }
 
     override fun onCleared() {

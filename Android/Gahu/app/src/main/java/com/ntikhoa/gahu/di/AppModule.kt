@@ -11,6 +11,7 @@ import com.ntikhoa.gahu.business.datasource.cache.AppDatabase
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStoreImpl
+import com.ntikhoa.gahu.business.datasource.network.account.GahuAccountService
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.presentation.session.SessionManager
@@ -63,6 +64,12 @@ object AppModule {
     @Singleton
     fun provideAuthService(retrofitBuilder: Retrofit.Builder): GahuAuthService {
         return retrofitBuilder.build().create(GahuAuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountService(retrofitBuilder: Retrofit.Builder): GahuAccountService {
+        return retrofitBuilder.build().create(GahuAccountService::class.java)
     }
 
     @Provides
