@@ -16,4 +16,5 @@
     <color name="btn_color">#4175F1</color>
     <color name="text_color">#5B9BFF</color>
     <color name="ripple_color">#42ffffff</color>
+    <color name="platform_color">#B44BF1</color>
 </resources>
