@@ -45,7 +45,7 @@ constructor(
         password: String,
         confirmPassword: String
     ) {
-        _state.value?.let { state ->
+        _state.value?.let {
             registerJob?.cancel()
             registerJob = registerUseCase(
                 email,
@@ -53,14 +53,14 @@ constructor(
                 password,
                 confirmPassword
             ).onEach { dataState ->
-                this._state.value = state.copy(isLoading = dataState.isLoading)
+                this._state.value = _state.value?.copy(isLoading = dataState.isLoading)
 
                 dataState.data?.let { data ->
                     sessionManager.token = data.token
                 }
 
                 dataState.message?.let { message ->
-                    _state.value = state.copy(message = message)
+                    _state.value = _state.value?.copy(message = message)
                 }
 
             }.launchIn(viewModelScope)
@@ -69,9 +69,7 @@ constructor(
 
     override fun cancelJob() {
         registerJob?.cancel()
-        _state.value?.let { state ->
-            this._state.value = state.copy(isLoading = false)
-        }
+        this._state.value = _state.value?.copy(isLoading = false)
     }
 
     override fun onCleared() {

@@ -15,7 +15,7 @@ class GetAccountCache(
         val accountEntity = accountDao.getAccount(token)
         accountEntity?.let {
             val account = it.toDomain()
-            Log.i("Debug", "cache")
+            println("cache")
             emit(DataState.data(data = account))
         }
     }

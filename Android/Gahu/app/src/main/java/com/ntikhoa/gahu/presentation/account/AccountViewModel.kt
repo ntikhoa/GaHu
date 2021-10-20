@@ -74,8 +74,6 @@ constructor(
         _state.value?.let { state ->
             println("$isLoadingCache && $isLoadingNetwork")
             return !(!isLoadingCache && !isLoadingNetwork)
-//                _state.value = state.copy(isLoading = false)
-//                _state.value = state.copy(isLoading = true)
         }
         return false
     }
@@ -83,21 +81,19 @@ constructor(
     private fun getAccount(
         useCase: () -> Flow<DataState<Account>>
     ): Job? {
-        return _state.value?.let { state ->
+        return _state.value?.let {
             useCase.invoke().onEach { dataState ->
 
                 isLoadingNetwork = dataState.isLoading
-                _state.value = state.copy(isLoading = checkLoading())
+                _state.value = _state.value?.copy(isLoading = checkLoading())
 
                 dataState.data?.let { account ->
                     println(account.email)
-                    _state.value = state.copy(account = account, isLoading = checkLoading())
-//                    println(_state.value)
+                    _state.value = _state.value?.copy(account = account)
                 }
 
                 dataState.message?.let { message ->
                     println(message)
-//                    _state.value = state.copy(message = message)
                 }
 
             }.launchIn(viewModelScope)
@@ -107,15 +103,14 @@ constructor(
     private fun getAccountCache(
         useCase: () -> Flow<DataState<Account>>
     ): Job? {
-        return _state.value?.let { state ->
+        return _state.value?.let {
             useCase.invoke().onEach { dataState ->
 
                 isLoadingCache = dataState.isLoading
-                _state.value = state.copy(isLoading = checkLoading())
+                _state.value = _state.value?.copy(isLoading = checkLoading())
 
                 dataState.data?.let { account ->
-                    println(account.email)
-                    _state.value = state.copy(account = account, isLoading = checkLoading())
+                    _state.value = _state.value?.copy(account = account)
                 }
 
                 dataState.message?.let { message ->
@@ -126,17 +121,17 @@ constructor(
     }
 
     private fun logout() {
-        _state.value?.let { state ->
+        _state.value?.let {
             logoutJob?.cancel()
             logoutJob = logoutUseCase()
                 .onEach { dataState ->
-                    this._state.value = state.copy(isLoading = dataState.isLoading)
+                    this._state.value = _state.value?.copy(isLoading = dataState.isLoading)
 
                     dataState.message?.let { message ->
                         if (message == LOGOUT_SUCCESSFULLY) {
                             sessionManager.token = null
                         }
-                        this._state.value = state.copy(message = message)
+                        this._state.value = _state.value?.copy(message = message)
                     }
                 }.launchIn(viewModelScope)
         }
@@ -147,9 +142,7 @@ constructor(
         getAccountCacheJob?.cancel()
         getAccountJob?.cancel()
 
-        _state.value?.let { state ->
-            this._state.value = state.copy(isLoading = false)
-        }
+        this._state.value = _state.value?.copy(isLoading = false)
     }
 
     override fun onCleared() {

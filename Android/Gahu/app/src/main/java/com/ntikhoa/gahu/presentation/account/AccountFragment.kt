@@ -30,9 +30,6 @@ class AccountFragment : BaseFragment(R.layout.fragment_account), View.OnClickLis
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
 
-    init {
-        fragmentName = "Account"
-    }
 
     private val viewModel: AccountViewModel by viewModels()
 

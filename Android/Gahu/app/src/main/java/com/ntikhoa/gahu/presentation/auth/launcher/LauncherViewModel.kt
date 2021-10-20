@@ -38,7 +38,7 @@ constructor(
     }
 
     private fun checkPrevAuth() {
-        _state.value?.let { state ->
+        _state.value?.let {
             checkPrevAuthJob?.cancel()
             checkPrevAuthJob = checkPrevAuthUseCase().onEach { dataState ->
                 dataState.data?.let { data ->

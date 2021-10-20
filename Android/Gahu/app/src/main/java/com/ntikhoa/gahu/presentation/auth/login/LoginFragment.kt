@@ -23,10 +23,6 @@ class LoginFragment :
     BaseFragment(R.layout.fragment_login),
     View.OnClickListener {
 
-    init {
-        fragmentName = "Login"
-    }
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 

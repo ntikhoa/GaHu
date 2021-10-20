@@ -24,7 +24,7 @@ class GetAccount(
             val accountEntity = account.toEntity()
 
             accountDao.insertOrReplace(accountEntity)
-            Log.i("Debug", "network")
+            println("network")
             emit(DataState.data(data = account))
         }
 

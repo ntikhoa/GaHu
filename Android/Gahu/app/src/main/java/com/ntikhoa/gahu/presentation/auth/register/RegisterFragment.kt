@@ -19,10 +19,6 @@ class RegisterFragment :
     BaseFragment(R.layout.fragment_register),
     View.OnClickListener {
 
-    init {
-        fragmentName = "Register"
-    }
-
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
@@ -41,7 +37,6 @@ class RegisterFragment :
             displayProgressBar(state.isLoading)
 
             state.message?.let { message ->
-                println("state: $message")
                 handleMessage(message)
             }
         })

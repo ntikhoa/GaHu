@@ -36,18 +36,18 @@ constructor(
     }
 
     private fun login(email: String, password: String) {
-        _state.value?.let { state ->
+        _state.value?.let {
             loginJob?.cancel()
             loginJob = loginUseCase(email, password)
                 .onEach { dataState ->
-                    this._state.value = state.copy(isLoading = dataState.isLoading)
+                    this._state.value = _state.value?.copy(isLoading = dataState.isLoading)
 
                     dataState.data?.let { account ->
                         sessionManager.token = account.token
                     }
 
                     dataState.message?.let { message ->
-                        this._state.value = state.copy(message = message)
+                        _state.value = _state.value?.copy(message = message)
                     }
                 }.launchIn(viewModelScope)
 
@@ -56,9 +56,7 @@ constructor(
 
     override fun cancelJob() {
         loginJob?.cancel()
-        _state.value?.let { state ->
-            this._state.value = state.copy(isLoading = false)
-        }
+        this._state.value = _state.value?.copy(isLoading = false)
     }
 
     override fun onCleared() {
