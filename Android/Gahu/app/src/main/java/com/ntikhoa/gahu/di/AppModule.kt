@@ -9,10 +9,12 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ntikhoa.gahu.business.datasource.cache.AppDatabase
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
+import com.ntikhoa.gahu.business.datasource.cache.game.GameDao
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStoreImpl
 import com.ntikhoa.gahu.business.datasource.network.account.GahuAccountService
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
+import com.ntikhoa.gahu.business.datasource.network.game.GahuGameService
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
@@ -62,6 +64,12 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGameDao(db: AppDatabase): GameDao {
+        return db.getGameDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthService(retrofitBuilder: Retrofit.Builder): GahuAuthService {
         return retrofitBuilder.build().create(GahuAuthService::class.java)
     }
@@ -70,6 +78,12 @@ object AppModule {
     @Singleton
     fun provideAccountService(retrofitBuilder: Retrofit.Builder): GahuAccountService {
         return retrofitBuilder.build().create(GahuAccountService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGameService(retrofitBuilder: Retrofit.Builder): GahuGameService {
+        return retrofitBuilder.build().create(GahuGameService::class.java)
     }
 
     @Provides

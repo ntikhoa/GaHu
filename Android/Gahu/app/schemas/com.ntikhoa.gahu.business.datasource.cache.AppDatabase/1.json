@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "285b9e8f6f8ef9f5b5887e185faf0e02",
+    "identityHash": "37917a3d1da80984325deffe1c6f10f2",
     "entities": [
       {
         "tableName": "accounts",
@@ -41,12 +41,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "platforms",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`pk` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`pk`))",
+        "fields": [
+          {
+            "fieldPath": "pk",
+            "columnName": "pk",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "pk"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '285b9e8f6f8ef9f5b5887e185faf0e02')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '37917a3d1da80984325deffe1c6f10f2')"
     ]
   }
 }
