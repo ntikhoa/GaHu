@@ -97,6 +97,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account), View.OnClickLis
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        viewModel.cancelJob()
     }
 
     override fun onClick(view: View?) {

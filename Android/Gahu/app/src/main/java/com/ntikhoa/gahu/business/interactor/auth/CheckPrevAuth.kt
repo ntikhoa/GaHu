@@ -38,7 +38,6 @@ class CheckPrevAuth(
                 data = account
             )
         )
-
     }.catch { e ->
         emit(handleUseCaseException(e))
     }

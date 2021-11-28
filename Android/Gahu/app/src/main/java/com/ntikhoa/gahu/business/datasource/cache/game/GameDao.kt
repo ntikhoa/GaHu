@@ -1,10 +1,7 @@
 package com.ntikhoa.gahu.business.datasource.cache.game
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 
 @Dao
 interface GameDao {
@@ -13,5 +10,8 @@ interface GameDao {
     suspend fun insertOrReplace(platformEntity: PlatformEntity)
 
     @Query("SELECT * FROM platforms")
-    suspend fun getPlatforms(): List<PlatformEntity>
+    suspend fun getPlatforms(): List<PlatformEntity>?
+
+    @Query("DELETE FROM platforms WHERE pk = :pk")
+    suspend fun deleteById(pk: String)
 }

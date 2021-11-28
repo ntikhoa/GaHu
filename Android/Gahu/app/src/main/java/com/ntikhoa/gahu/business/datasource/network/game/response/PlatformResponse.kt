@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.ntikhoa.gahu.business.domain.model.Platform
 
 data class PlatformResponse(
-    @SerializedName("id")
+    @SerializedName("_id")
     @Expose
     var id: String,
 
@@ -13,10 +13,9 @@ data class PlatformResponse(
     @Expose
     var name: String
 ) {
-    fun toDomain(): Platform {
-        return Platform(
+    fun toDomain() =
+        Platform(
             id = id,
             name = name
         )
-    }
 }
