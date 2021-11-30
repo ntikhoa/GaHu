@@ -9,6 +9,8 @@
     tools:context=".presentation.game.GameListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="32dp"
+        android:id="@+id/rv_platform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -18,7 +20,7 @@
         tools:listitem="@layout/item_platform" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_"
+        android:id="@+id/rv_game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="32dp"

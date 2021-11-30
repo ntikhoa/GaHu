@@ -27,7 +27,7 @@ constructor(
     private val _state: MutableLiveData<GameState> = MutableLiveData(GameState())
     val state: LiveData<GameState> get() = _state
 
-    var platformJob: Job? = null
+    private var platformJob: Job? = null
 
     override fun onTriggerEvent(event: GameEvent) {
         when (event) {
@@ -44,11 +44,9 @@ constructor(
             platformJob?.cancel()
             platformJob = getPlatformsUseCase(token).onEach { dataState ->
                 _state.value = _state.value?.copy(isLoading = dataState.isLoading)
-                print("loading: ${dataState.isLoading}")
 
                 dataState.data?.let { platforms ->
-                    Log.i(TAG, "getPlatforms: $platforms")
-//                    _state.value = _state.value?.copy(platforms = platforms)
+                    _state.value = _state.value?.copy(platforms = platforms)
                 }
 
                 dataState.message?.let { msg ->
