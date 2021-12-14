@@ -14,4 +14,12 @@ interface GameDao {
 
     @Query("DELETE FROM platforms WHERE pk = :pk")
     suspend fun deleteById(pk: String)
+
+    @Query(
+        """
+        SELECT * FROM games
+        INNER JOIN platforms ON platforms.pk in games.platforms
+    """
+    )
+    suspend fun getGamesList(): List<GameEntity>
 }

@@ -1,12 +1,10 @@
 package com.ntikhoa.gahu.business.interactor.account
 
-import android.util.Log
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
 import com.ntikhoa.gahu.business.datasource.network.account.GahuAccountService
 import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.util.DataState
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
