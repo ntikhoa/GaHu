@@ -18,7 +18,7 @@ class GetAccount(
 
         val accountResponse = accountService.getUser("Bearer $token")
         accountResponse.data?.let { data ->
-            val account = data.toDomain(token)
+            val account = data.toAccountDomain(token)
             val accountEntity = account.toEntity()
 
             accountDao.insertOrReplace(accountEntity)

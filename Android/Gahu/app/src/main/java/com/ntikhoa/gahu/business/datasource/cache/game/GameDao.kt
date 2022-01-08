@@ -7,7 +7,10 @@ import androidx.room.OnConflictStrategy.REPLACE
 interface GameDao {
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertOrReplace(platformEntity: PlatformEntity)
+    suspend fun insertOrReplacePlatform(platformEntity: PlatformEntity)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertOrReplaceGame(gameEntity: GameEntity)
 
     @Query("SELECT * FROM platforms")
     suspend fun getPlatforms(): List<PlatformEntity>?
@@ -19,7 +22,18 @@ interface GameDao {
         """
         SELECT * FROM games
         INNER JOIN platforms ON platforms.pk in games.platforms
+        LIMIT 10 OFFSET ((:page -1) * 10) 
     """
     )
-    suspend fun getGamesList(): List<GameEntity>
+    suspend fun getGamesList(page: Int): List<GameEntity>
+
+    @Query(
+        """
+        SELECT * FROM games
+        INNER JOIN platforms ON platforms.pk in games.platforms
+        WHERE :platformId IN games.platforms       
+        LIMIT 10 OFFSET ((:page -1) * 10) 
+    """
+    )
+    suspend fun getGamesListPlatformFilter(page: Int, platformId: String): List<GameEntity>
 }

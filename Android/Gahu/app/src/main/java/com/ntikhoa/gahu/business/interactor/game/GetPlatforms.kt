@@ -54,7 +54,7 @@ class GetPlatforms(
 
     private suspend fun updateCache(platforms: List<Platform>) {
         for (platform in platforms) {
-            gameDao.insertOrReplace(platform.toEntity())
+            gameDao.insertOrReplacePlatform(platform.toEntity())
         }
     }
 

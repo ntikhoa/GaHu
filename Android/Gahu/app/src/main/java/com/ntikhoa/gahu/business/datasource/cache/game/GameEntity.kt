@@ -1,11 +1,10 @@
 package com.ntikhoa.gahu.business.datasource.cache.game
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountEntity
+import com.ntikhoa.gahu.business.domain.model.Author
+import com.ntikhoa.gahu.business.domain.model.Game
 import com.ntikhoa.gahu.business.domain.model.Platform
 
 @Entity(
@@ -38,13 +37,37 @@ data class GameEntity(
     val description: String,
 
     @ColumnInfo(name = "platforms")
-    val platforms: List<String>,
+    val platformIds: List<String>,
 
     @ColumnInfo(name = "authorId")
     val authorId: String,
 
+    @ColumnInfo(name = "authorEmail")
+    val authorEmail: String,
+
     @ColumnInfo(name = "authorName")
     val authorName: String,
-) {
 
+    @Embedded
+    val platforms: List<PlatformEntity>
+) {
+    fun toDomain(): Game {
+        val platforms = platforms.map {
+            it.toDomain()
+        }
+
+        return Game(
+            id = pk,
+            title = title,
+            releaseDate = releaseDate,
+            imageUrl = imageUrl,
+            description = description,
+            platforms = platforms,
+            author = Author(
+                id = authorId,
+                email = authorEmail,
+                username = authorName
+            )
+        )
+    }
 }
