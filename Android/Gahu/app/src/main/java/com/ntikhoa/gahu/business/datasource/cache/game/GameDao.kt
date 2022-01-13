@@ -12,6 +12,7 @@ interface GameDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertOrReplaceGame(gameEntity: GameEntity)
 
+    @Insert
     suspend fun insertGamePlatform(gamePlatformEntity: GamePlatformEntity)
 
     @Query("SELECT * FROM platforms")
@@ -36,5 +37,6 @@ interface GameDao {
          LIMIT 10 OFFSET ((:page -1) * 10)
     """
     )
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     suspend fun getGameListPlatformFilter(page: Int, platformId: String): List<GameEntity>
 }

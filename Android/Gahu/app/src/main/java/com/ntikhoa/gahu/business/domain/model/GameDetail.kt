@@ -11,7 +11,7 @@ class GameDetail(
     imageUrl: String,
     description: String,
     author: Author,
-    val platforms: List<Platform>?
+    val platforms: List<Platform>
 ) : Game(id, title, releaseDate, imageUrl, description, author) {
 
     fun toGameEntity(): GameEntity {
@@ -29,15 +29,13 @@ class GameDetail(
 
     fun toGamePlatformEntity(): List<GamePlatformEntity> {
         val result = ArrayList<GamePlatformEntity>()
-        platforms?.let {
-            for (platform in it) {
-                result.add(
-                    GamePlatformEntity(
-                        gameId = id,
-                        platformId = platform.id
-                    )
+        for (platform in platforms) {
+            result.add(
+                GamePlatformEntity(
+                    gameId = id,
+                    platformId = platform.id
                 )
-            }
+            )
         }
         return result
     }

@@ -19,7 +19,7 @@ class GetGames(
         token: String,
         page: Int,
         platformId: String?
-    ): Flow<DataState<List<Game>>> = flow<DataState<List<Game>>> {
+    ): Flow<DataState<List<Game>>> = flow {
 
         emit(DataState.loading())
 

@@ -1,8 +1,7 @@
 package com.ntikhoa.gahu.business.datasource.cache.game
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
+import androidx.room.util.TableInfo
 
 @Entity(
     tableName = "game_platform",
@@ -22,7 +21,8 @@ import androidx.room.ForeignKey
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("platform_id")]
 )
 data class GamePlatformEntity(
     @ColumnInfo(name = "game_id")
