@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.ntikhoa.gahu.business.datasource.network.account.response.AccountResponse
 import com.ntikhoa.gahu.business.domain.model.Game
+import com.ntikhoa.gahu.business.domain.model.GameDetail
 
 data class GameResponse(
     @SerializedName("_id")
@@ -34,16 +35,15 @@ data class GameResponse(
     @Expose
     val author: AccountResponse
 ) {
-    fun toDomain(): Game {
-        val platformsDomain = this.platforms.map { it.toDomain() }
-        return Game(
+    fun toDomain(): GameDetail {
+        return GameDetail(
             id = id,
             title = title,
             releaseDate = releaseDate,
             imageUrl = imageUrl,
             description = description,
-            platforms = platformsDomain,
-            author = author.toAuthorDomain()
+            author = author.toAuthorDomain(),
+            platforms = platforms.map { it.toDomain() },
         )
     }
 }

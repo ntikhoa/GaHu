@@ -37,23 +37,18 @@ data class GameEntity constructor(
     val authorName: String
 ) {
 
-//    fun toDomain(): Game {
-//        val platforms = platforms.map {
-//            it.toDomain()
-//        }
-//
-//        return Game(
-//            id = pk,
-//            title = title,
-//            releaseDate = releaseDate,
-//            imageUrl = imageUrl,
-//            description = description,
-//            platforms = platforms,
-//            author = Author(
-//                id = authorId,
-//                email = authorEmail,
-//                username = authorName
-//            )
-//        )
-//    }
+    fun toDomain(): Game {
+        return Game(
+            id = pk,
+            title = title,
+            releaseDate = releaseDate,
+            imageUrl = imageUrl,
+            description = description,
+            author = Author(
+                id = authorId,
+                email = authorEmail,
+                username = authorName
+            )
+        )
+    }
 }

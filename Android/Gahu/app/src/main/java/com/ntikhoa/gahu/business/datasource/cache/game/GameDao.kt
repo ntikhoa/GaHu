@@ -12,6 +12,8 @@ interface GameDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertOrReplaceGame(gameEntity: GameEntity)
 
+    suspend fun insertGamePlatform(gamePlatformEntity: GamePlatformEntity)
+
     @Query("SELECT * FROM platforms")
     suspend fun getPlatforms(): List<PlatformEntity>?
 
