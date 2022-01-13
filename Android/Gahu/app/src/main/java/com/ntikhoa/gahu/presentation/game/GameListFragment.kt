@@ -3,11 +3,9 @@ package com.ntikhoa.gahu.presentation.game
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Adapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ntikhoa.gahu.R
-import com.ntikhoa.gahu.business.domain.model.Platform
 import com.ntikhoa.gahu.databinding.FragmentGameListBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
 import com.ntikhoa.gahu.presentation.game.adapter.PlatformAdapter
@@ -41,14 +39,16 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
 
     private fun subscribeObserver() {
         viewModel.state.observe(viewLifecycleOwner, Observer { state ->
-            displayProgressBar(state.isLoading)
+            state.platformState.let { platformState ->
+                displayProgressBar(platformState.isLoading)
 
-            state.platforms?.let {
-                platformAdapter.submitList(it.toMutableList())
-            }
+                platformState.platforms?.let {
+                    platformAdapter.submitList(it.toMutableList())
+                }
 
-            state.message?.let {
-                handleMessage(it)
+                platformState.message?.let {
+                    handleMessage(it)
+                }
             }
         })
     }

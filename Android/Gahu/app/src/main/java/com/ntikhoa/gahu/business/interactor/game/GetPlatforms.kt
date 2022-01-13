@@ -70,7 +70,7 @@ class GetPlatforms(
         }
 
         for (filterId in filterIds) {
-            gameDao.deleteById(filterId)
+            gameDao.deletePlatformById(filterId)
         }
     }
 }

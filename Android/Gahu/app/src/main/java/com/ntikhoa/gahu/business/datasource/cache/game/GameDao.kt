@@ -15,25 +15,24 @@ interface GameDao {
     @Query("SELECT * FROM platforms")
     suspend fun getPlatforms(): List<PlatformEntity>?
 
-    @Query("DELETE FROM platforms WHERE pk = :pk")
-    suspend fun deleteById(pk: String)
+    @Query("DELETE FROM platforms WHERE _pk = :pk")
+    suspend fun deletePlatformById(pk: String)
 
     @Query(
         """
         SELECT * FROM games
-        INNER JOIN platforms ON platforms.pk in games.platforms
         LIMIT 10 OFFSET ((:page -1) * 10) 
     """
     )
-    suspend fun getGamesList(page: Int): List<GameEntity>
+    suspend fun getGameList(page: Int): List<GameEntity>
 
     @Query(
         """
-        SELECT * FROM games
-        INNER JOIN platforms ON platforms.pk in games.platforms
-        WHERE :platformId IN games.platforms       
-        LIMIT 10 OFFSET ((:page -1) * 10) 
+         SELECT * FROM games
+         JOIN game_platform ON game_id = pk
+         WHERE platform_id = :platformId
+         LIMIT 10 OFFSET ((:page -1) * 10)
     """
     )
-    suspend fun getGamesListPlatformFilter(page: Int, platformId: String): List<GameEntity>
+    suspend fun getGameListPlatformFilter(page: Int, platformId: String): List<GameEntity>
 }

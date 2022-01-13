@@ -20,32 +20,36 @@ class GetGames(
         platformId: String?
     ): Flow<DataState<List<Game>>> = flow {
         emit(DataState.loading())
+        val dummy: List<Game> = ArrayList<Game>()
+        emit(DataState.data(data = dummy))
         val gamesEntity = getGamesListCache(page, platformId)
-        val gamesCache = gamesEntity.map { it.toDomain() }
-        emit(DataState(isLoading = false, data = gamesCache))
+        //val gamesCache =
 
-        val gamesResponse = gameService.getGames(
-            "Bearer $token",
-            page,
-            platformId
-        )
 
-        gamesResponse.data?.let {
-            val games = it.games.map { it.toDomain() }
-            val gameEntities = games.map { it.toEntity() }
-            for (gameEntity in gameEntities) {
-                //check for date Updated, but I dont have that now
-                gameDao.insertOrReplaceGame(gameEntity)
-            }
-
-            val gamesUpdated = getGamesListCache(page, platformId).map { it.toDomain() }
-            emit(
-                DataState.data(
-                    message = gamesResponse.message,
-                    data = gamesUpdated
-                )
-            )
-        }
+//        emit(DataState(isLoading = false, data = gamesCache))
+//
+//        val gamesResponse = gameService.getGames(
+//            "Bearer $token",
+//            page,
+//            platformId
+//        )
+//
+//        gamesResponse.data?.let {
+//            val games = it.games.map { it.toDomain() }
+//            val gameEntities = games.map { it.toEntity() }
+//            for (gameEntity in gameEntities) {
+//                //check for date Updated, but I dont have that now
+//                gameDao.insertOrReplaceGame(gameEntity)
+//            }
+//
+//            val gamesUpdated = getGamesListCache(page, platformId).map { it.toDomain() }
+//            emit(
+//                DataState.data(
+//                    message = gamesResponse.message,
+//                    data = gamesUpdated
+//                )
+//            )
+//        }
 
     }.catch {
         emit(handleUseCaseException(it))
@@ -54,7 +58,7 @@ class GetGames(
     private suspend fun getGamesListCache(page: Int, platformId: String?):
             List<GameEntity> {
         return platformId?.let {
-            gameDao.getGamesListPlatformFilter(page, it)
-        } ?: gameDao.getGamesList(page)
+            gameDao.getGameListPlatformFilter(page, it)
+        } ?: gameDao.getGameList(page)
     }
 }

@@ -12,18 +12,17 @@ data class Game(
     val platforms: List<Platform>,
     val author: Author
 ) {
-    fun toEntity(): GameEntity {
-        return GameEntity(
-            pk = id,
-            title = title,
-            releaseDate = releaseDate,
-            imageUrl = imageUrl,
-            description = description,
-            platformIds = platforms.map { it.id },
-            authorId = author.id,
-            authorName = author.username,
-            authorEmail = author.email,
-            platforms = platforms.map { it.toEntity() }
-        )
-    }
+//    fun toEntity(): GameEntity {
+//        return GameEntity(
+//            pk = id,
+//            title = title,
+//            releaseDate = releaseDate,
+//            imageUrl = imageUrl,
+//            description = description,
+//            platformIds = platforms.map { it.id },
+//            authorId = author.id,
+//            authorName = author.username,
+//            authorEmail = author.email,
+//        )
+//    }
 }

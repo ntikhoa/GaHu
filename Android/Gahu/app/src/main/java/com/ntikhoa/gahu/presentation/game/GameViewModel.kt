@@ -1,6 +1,5 @@
 package com.ntikhoa.gahu.presentation.game
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,8 +23,8 @@ constructor(
 ) : ViewModel(), OnTriggerEvent<GameEvent>, CancelJob {
     private val TAG = "GameViewModel"
 
-    private val _state: MutableLiveData<GameState> = MutableLiveData(GameState())
-    val state: LiveData<GameState> get() = _state
+    private val _state: MutableLiveData<GameListState> = MutableLiveData(GameListState())
+    val state: LiveData<GameListState> get() = _state
 
     private var platformJob: Job? = null
 
@@ -43,16 +42,39 @@ constructor(
         _state.value?.let {
             platformJob?.cancel()
             platformJob = getPlatformsUseCase(token).onEach { dataState ->
-                _state.value = _state.value?.copy(isLoading = dataState.isLoading)
+                _state.value?.platformState?.let {
+                    val platformState = it.copy()
 
-                dataState.data?.let { platforms ->
-                    _state.value = _state.value?.copy(platforms = platforms)
-                }
+                    platformState.isLoading = dataState.isLoading
 
-                dataState.message?.let { msg ->
-                    _state.value = _state.value?.copy(message = msg)
+                    dataState.data?.let { platforms ->
+                        platformState.platforms = platforms
+                    }
+
+                    dataState.message?.let { msg ->
+                        platformState.message = msg
+                    }
+
+                    _state.value = _state.value?.copy(platformState = platformState)
                 }
+//                _state.value = _state.value?.copy(
+//                    isLoading = dataState.isLoading
+//                )
+//
+//                dataState.data?.let { platforms ->
+//                    _state.value = _state.value?.copy(platforms = platforms)
+//                }
+//
+//                dataState.message?.let { msg ->
+//                    _state.value = _state.value?.copy(message = msg)
+//                }
             }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun getGames(token: String, page: Int, platformId: String) {
+        _state.value?.let {
+//            if (page == _state.value.)
         }
     }
 

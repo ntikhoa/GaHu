@@ -8,18 +8,9 @@ import com.ntikhoa.gahu.business.domain.model.Game
 import com.ntikhoa.gahu.business.domain.model.Platform
 
 @Entity(
-    tableName = "games",
-    foreignKeys = [
-        ForeignKey(
-            entity = PlatformEntity::class,
-            parentColumns = ["pk"],
-            childColumns = ["pk"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ]
+    tableName = "games"
 )
-data class GameEntity(
+data class GameEntity constructor(
     @PrimaryKey
     @ColumnInfo(name = "pk")
     var pk: String,
@@ -27,47 +18,42 @@ data class GameEntity(
     @ColumnInfo(name = "title")
     val title: String,
 
-    @ColumnInfo(name = "releaseDate")
+    @ColumnInfo(name = "release_date")
     val releaseDate: String,
 
-    @ColumnInfo(name = "imageUrl")
+    @ColumnInfo(name = "image_url")
     val imageUrl: String,
 
     @ColumnInfo(name = "description")
     val description: String,
 
-    @ColumnInfo(name = "platforms")
-    val platformIds: List<String>,
-
-    @ColumnInfo(name = "authorId")
+    @ColumnInfo(name = "author_id")
     val authorId: String,
 
-    @ColumnInfo(name = "authorEmail")
+    @ColumnInfo(name = "author_email")
     val authorEmail: String,
 
-    @ColumnInfo(name = "authorName")
-    val authorName: String,
-
-    @Embedded
-    val platforms: List<PlatformEntity>
+    @ColumnInfo(name = "author_name")
+    val authorName: String
 ) {
-    fun toDomain(): Game {
-        val platforms = platforms.map {
-            it.toDomain()
-        }
 
-        return Game(
-            id = pk,
-            title = title,
-            releaseDate = releaseDate,
-            imageUrl = imageUrl,
-            description = description,
-            platforms = platforms,
-            author = Author(
-                id = authorId,
-                email = authorEmail,
-                username = authorName
-            )
-        )
-    }
+//    fun toDomain(): Game {
+//        val platforms = platforms.map {
+//            it.toDomain()
+//        }
+//
+//        return Game(
+//            id = pk,
+//            title = title,
+//            releaseDate = releaseDate,
+//            imageUrl = imageUrl,
+//            description = description,
+//            platforms = platforms,
+//            author = Author(
+//                id = authorId,
+//                email = authorEmail,
+//                username = authorName
+//            )
+//        )
+//    }
 }

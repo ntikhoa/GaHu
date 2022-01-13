@@ -8,7 +8,7 @@ import com.ntikhoa.gahu.business.domain.model.Platform
 @Entity(tableName = "platforms")
 data class PlatformEntity(
     @PrimaryKey
-    @ColumnInfo(name = "pk")
+    @ColumnInfo(name = "_pk")
     var pk: String,
 
     @ColumnInfo(name = "name")
