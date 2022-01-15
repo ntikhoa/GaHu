@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ntikhoa.gahu.business.interactor.game.GetGames
 import com.ntikhoa.gahu.business.interactor.game.GetPlatforms
 import com.ntikhoa.gahu.presentation.CancelJob
 import com.ntikhoa.gahu.presentation.OnTriggerEvent
@@ -19,6 +20,7 @@ class GameViewModel
 @Inject
 constructor(
     private val getPlatformsUseCase: GetPlatforms,
+    private val getGamesUseCase: GetGames,
     private val sessionManager: SessionManager
 ) : ViewModel(), OnTriggerEvent<GameEvent>, CancelJob {
     private val TAG = "GameViewModel"
@@ -27,12 +29,18 @@ constructor(
     val state: LiveData<GameListState> get() = _state
 
     private var platformJob: Job? = null
+    private var gameJob: Job? = null
 
     override fun onTriggerEvent(event: GameEvent) {
         when (event) {
             is GameEvent.GetPlatforms -> {
                 sessionManager.token?.let { token ->
                     getPlatforms(token)
+                }
+            }
+            is GameEvent.GetGames -> {
+                sessionManager.token?.let { token ->
+                    getGames(token)
                 }
             }
         }
@@ -57,29 +65,40 @@ constructor(
 
                     _state.value = _state.value?.copy(platformState = platformState)
                 }
-//                _state.value = _state.value?.copy(
-//                    isLoading = dataState.isLoading
-//                )
-//
-//                dataState.data?.let { platforms ->
-//                    _state.value = _state.value?.copy(platforms = platforms)
-//                }
-//
-//                dataState.message?.let { msg ->
-//                    _state.value = _state.value?.copy(message = msg)
-//                }
             }.launchIn(viewModelScope)
         }
     }
 
-    private fun getGames(token: String, page: Int, platformId: String) {
+    private fun getGames(token: String) {
         _state.value?.let {
-//            if (page == _state.value.)
+            gameJob?.cancel()
+            gameJob = getGamesUseCase(
+                token,
+                it.gameState.page,
+                it.gameState.platformIdFilter
+            ).onEach { dataState ->
+                _state.value?.gameState?.let {
+                    val gameState = it.copy()
+
+                    gameState.isLoading = dataState.isLoading
+
+                    dataState.data?.let { games ->
+                        gameState.games = games
+                    }
+
+                    dataState.message?.let { msg ->
+                        gameState.message = msg
+                    }
+
+                    _state.value = _state.value?.copy(gameState = gameState)
+                }
+            }.launchIn(viewModelScope)
         }
     }
 
     override fun cancelJob() {
         platformJob?.cancel()
+        gameJob?.cancel()
     }
 
     override fun onCleared() {

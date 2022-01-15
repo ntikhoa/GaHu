@@ -1,5 +1,6 @@
 package com.ntikhoa.gahu.presentation.game
 
+import com.ntikhoa.gahu.business.domain.model.Game
 import com.ntikhoa.gahu.business.domain.model.Platform
 
 data class GameListState(
@@ -12,5 +13,12 @@ data class GameListState(
         var message: String? = null
     )
 
-    data class GameState(val isLoading: Boolean = false)
+    data class GameState(
+        var isLoading: Boolean = false,
+        var isExhausted: Boolean = false,
+        var games: List<Game>? = null,
+        var page: Int = 0,
+        var platformIdFilter: String? = null,
+        var message: String? = null,
+    )
 }
