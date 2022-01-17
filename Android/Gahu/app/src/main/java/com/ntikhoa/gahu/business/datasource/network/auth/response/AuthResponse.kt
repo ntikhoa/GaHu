@@ -10,7 +10,7 @@ data class AuthResponse(
     @Expose
     var token: String,
 
-    @SerializedName("id")
+    @SerializedName("_id")
     @Expose
     var id: String,
 

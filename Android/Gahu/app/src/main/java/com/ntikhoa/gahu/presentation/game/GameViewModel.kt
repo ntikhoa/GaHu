@@ -26,8 +26,11 @@ constructor(
 ) : ViewModel(), OnTriggerEvent<GameEvent>, CancelJob {
     private val TAG = "GameViewModel"
 
-    private val _state: MutableLiveData<GameListState> = MutableLiveData(GameListState())
-    val state: LiveData<GameListState> get() = _state
+    private val _platformState: MutableLiveData<PlatformState> = MutableLiveData(PlatformState())
+    val platformState: LiveData<PlatformState> get() = _platformState
+
+    private val _gameState: MutableLiveData<GameState> = MutableLiveData(GameState())
+    val gameState: LiveData<GameState> get() = _gameState
 
     private var platformJob: Job? = null
     private var gameJob: Job? = null
@@ -48,53 +51,49 @@ constructor(
     }
 
     private fun getPlatforms(token: String) {
-        _state.value?.let {
+        _platformState.value?.copy()?.let { copiedState ->
             platformJob?.cancel()
             platformJob = getPlatformsUseCase(token).onEach { dataState ->
-                _state.value?.platformState?.let {
-                    val platformState = it.copy()
 
-                    platformState.isLoading = dataState.isLoading
+                copiedState.isLoading = dataState.isLoading
 
-                    dataState.data?.let { platforms ->
-                        platformState.platforms = platforms
-                    }
-
-                    dataState.message?.let { msg ->
-                        platformState.message = msg
-                    }
-
-                    _state.value = _state.value?.copy(platformState = platformState)
+                dataState.data?.let { platforms ->
+                    Log.i(TAG, "getPlatforms: $platforms")
+                    copiedState.platforms = platforms
                 }
+
+                dataState.message?.let { msg ->
+                    Log.i(TAG, "getPlatformsMsg: $msg")
+                    copiedState.message = msg
+                }
+
+                _platformState.value = copiedState
             }.launchIn(viewModelScope)
         }
     }
 
     private fun getGames(token: String) {
-        _state.value?.let {
+        _gameState.value?.copy()?.let { copiedState ->
             gameJob?.cancel()
             gameJob = getGamesUseCase(
                 token,
-                it.gameState.page,
-                it.gameState.platformIdFilter
+                copiedState.page,
+                copiedState.platformIdFilter
             ).onEach { dataState ->
-                _state.value?.gameState?.let {
-                    val gameState = it.copy()
 
-                    gameState.isLoading = dataState.isLoading
+                copiedState.isLoading = dataState.isLoading
 
-                    dataState.data?.let { games ->
-                        Log.i(TAG, "getGames: $games")
-                        gameState.games = games
-                    }
-
-                    dataState.message?.let { msg ->
-                        Log.i(TAG, "getGames: $msg")
-                        gameState.message = msg
-                    }
-
-                    _state.value = _state.value?.copy(gameState = gameState)
+                dataState.data?.let { games ->
+                    Log.i(TAG, "getGames: $games")
+                    copiedState.games = games
                 }
+
+                dataState.message?.let { msg ->
+                    Log.i(TAG, "getGamesMsg: $msg")
+                    copiedState.message = msg
+                }
+
+                _gameState.value = copiedState
             }.launchIn(viewModelScope)
         }
     }

@@ -2,6 +2,7 @@ package com.ntikhoa.gahu.presentation.game
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
+    private val TAG = "GameListFragment"
 
     private val viewModel: GameViewModel by viewModels()
 
@@ -44,34 +46,43 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     }
 
     private fun subscribeObserver() {
-        viewModel.state.observe(viewLifecycleOwner, Observer { state ->
-            handlePlatformState(state.platformState)
-            handleGameState(state.gameState)
+        subscribePlatformState()
+        subscribeGameState()
+    }
+
+    private fun subscribeGameState() {
+        viewModel.gameState.observe(viewLifecycleOwner, Observer { state ->
+
+            displayProgressBar(state.isLoading)
+
+            state.games?.let {
+                if (it.isNotEmpty()) {
+                    Log.i(TAG, "subscribeGameState: It get submitted: $it")
+                    gameAdapter.submitList(it)
+                }
+            }
+
+            state.message?.let {
+                handleMessage(it)
+            }
         })
     }
 
-    private fun handleGameState(gameState: GameListState.GameState) {
-        displayProgressBar(gameState.isLoading)
+    private fun subscribePlatformState() {
+        viewModel.platformState.observe(viewLifecycleOwner, Observer { state ->
+            //displayProgressBar(platformState.isLoading)
 
-        gameState.games?.let {
-            gameAdapter.submitList(it)
-        }
+            state.platforms?.let {
+                if (it.isNotEmpty()) {
+                    Log.i(TAG, "subscribePlatformState: It get submitted: $it")
+                    platformAdapter.submitList(it.toMutableList())
+                }
+            }
 
-        gameState.message?.let {
-            handleMessage(it)
-        }
-    }
-
-    private fun handlePlatformState(platformState: GameListState.PlatformState) {
-        displayProgressBar(platformState.isLoading)
-
-        platformState.platforms?.let {
-            platformAdapter.submitList(it.toMutableList())
-        }
-
-        platformState.message?.let {
-            handleMessage(it)
-        }
+            state.message?.let {
+                handleMessage(it)
+            }
+        })
     }
 
     override fun onDestroyView() {

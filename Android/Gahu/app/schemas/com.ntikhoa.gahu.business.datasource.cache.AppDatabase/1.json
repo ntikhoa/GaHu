@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "12bc721d1a2e293fbf8e85ceae80bd0f",
+    "identityHash": "7e3a309b0e36a3fd54243d78001bc435",
     "entities": [
       {
         "tableName": "accounts",
@@ -132,7 +132,7 @@
       },
       {
         "tableName": "game_platform",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` TEXT NOT NULL, `platform_id` TEXT NOT NULL, PRIMARY KEY(`game_id`, `platform_id`), FOREIGN KEY(`game_id`) REFERENCES `games`(`pk`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`platform_id`) REFERENCES `platforms`(`_pk`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`game_id` TEXT NOT NULL, `platform_id` TEXT NOT NULL, PRIMARY KEY(`game_id`, `platform_id`))",
         "fields": [
           {
             "fieldPath": "gameId",
@@ -154,46 +154,14 @@
           ],
           "autoGenerate": false
         },
-        "indices": [
-          {
-            "name": "index_game_platform_platform_id",
-            "unique": false,
-            "columnNames": [
-              "platform_id"
-            ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_game_platform_platform_id` ON `${TABLE_NAME}` (`platform_id`)"
-          }
-        ],
-        "foreignKeys": [
-          {
-            "table": "games",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "game_id"
-            ],
-            "referencedColumns": [
-              "pk"
-            ]
-          },
-          {
-            "table": "platforms",
-            "onDelete": "CASCADE",
-            "onUpdate": "CASCADE",
-            "columns": [
-              "platform_id"
-            ],
-            "referencedColumns": [
-              "_pk"
-            ]
-          }
-        ]
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '12bc721d1a2e293fbf8e85ceae80bd0f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7e3a309b0e36a3fd54243d78001bc435')"
     ]
   }
 }
