@@ -22,7 +22,7 @@ module.exports.register = async (req, res, next) => {
     res.status(201).json({
         data: {
             token: token,
-            id: result._id,
+            _id: result._id,
             email: result.email,
             username: result.username
         },
@@ -38,7 +38,7 @@ module.exports.login = (req, res, next) => {
     res.status(200).json({
         data: {
             token: token,
-            id: user._id,
+            _id: user._id,
             email: user.email,
             username: user.username
         },

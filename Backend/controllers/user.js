@@ -3,7 +3,7 @@ module.exports.getUser = (req, res, next) => {
 
     res.status(200).json({
         data: {
-            id: user._id,
+            _id: user._id,
             email: user.email,
             username: user.username
         },
@@ -21,7 +21,7 @@ module.exports.updateUser = async (req, res, next) => {
 
     res.status(200).json({
         data: {
-            id: result._id,
+            _id: result._id,
             email: result.email,
             username: result.username
         },
