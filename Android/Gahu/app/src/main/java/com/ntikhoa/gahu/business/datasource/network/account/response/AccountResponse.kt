@@ -6,7 +6,7 @@ import com.ntikhoa.gahu.business.domain.model.Account
 import com.ntikhoa.gahu.business.domain.model.Author
 
 data class AccountResponse(
-    @SerializedName("id")
+    @SerializedName("_id")
     @Expose
     var id: String,
 

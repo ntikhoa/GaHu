@@ -17,7 +17,7 @@ data class GameListState(
         var isLoading: Boolean = false,
         var isExhausted: Boolean = false,
         var games: List<Game>? = null,
-        var page: Int = 0,
+        var page: Int = 1,
         var platformIdFilter: String? = null,
         var message: String? = null,
     )

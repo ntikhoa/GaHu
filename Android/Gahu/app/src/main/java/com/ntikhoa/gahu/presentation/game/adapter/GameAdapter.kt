@@ -27,6 +27,11 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         AsyncDifferConfig.Builder(DIFF_CALLBACK).build()
     )
 
+    fun submitList(games: List<Game>) {
+        val newList = games.toMutableList()
+        differ.submitList(newList)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_game, parent, false)

@@ -1,5 +1,6 @@
 package com.ntikhoa.gahu.presentation.game
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -83,10 +84,12 @@ constructor(
                     gameState.isLoading = dataState.isLoading
 
                     dataState.data?.let { games ->
+                        Log.i(TAG, "getGames: $games")
                         gameState.games = games
                     }
 
                     dataState.message?.let { msg ->
+                        Log.i(TAG, "getGames: $msg")
                         gameState.message = msg
                     }
 
