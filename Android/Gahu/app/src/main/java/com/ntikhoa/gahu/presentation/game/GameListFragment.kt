@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.model.Platform
 import com.ntikhoa.gahu.databinding.FragmentGameListBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
 import com.ntikhoa.gahu.presentation.game.adapter.GameAdapter
@@ -40,6 +41,16 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     private fun initRecyclerView() {
         platformAdapter = PlatformAdapter()
         binding.rvPlatform.adapter = platformAdapter
+        platformAdapter.setOnItemClickListener {
+            Log.i(TAG, "onItemClick: ${it.id}")
+            var platformId: String? = it.id
+            if (it == Platform.ALL_PLATFORM) {
+                platformId = null
+            }
+            viewModel.onTriggerEvent(GameEvent.SetPlatformFilter(platformId))
+            viewModel.onTriggerEvent(GameEvent.GetGames())
+        }
+
 
         gameAdapter = GameAdapter()
         binding.rvGame.adapter = gameAdapter

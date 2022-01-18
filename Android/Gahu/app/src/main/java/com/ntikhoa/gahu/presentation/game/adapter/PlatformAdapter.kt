@@ -1,8 +1,7 @@
 package com.ntikhoa.gahu.presentation.game.adapter
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -15,7 +14,17 @@ import com.ntikhoa.gahu.databinding.ItemPlatformBinding
 
 class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder>(DIFF_CALLBACK) {
 
+    private val TAG = "PlatformAdapter"
+
     private lateinit var context: Context
+
+    private var listener: ((Platform) -> Unit)? = null
+
+    private var currentPlatform = Platform.ALL_PLATFORM
+
+    fun setOnItemClickListener(listener: (Platform) -> Unit) {
+        this.listener = listener
+    }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Platform>() {
@@ -52,16 +61,35 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
         return currentList.size
     }
 
-    class PlatformViewHolder(private val binding: ItemPlatformBinding) :
+    inner class PlatformViewHolder(private val binding: ItemPlatformBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    currentPlatform = currentList[position]
+                    notifyDataSetChanged()
+                    listener?.invoke(currentList[position])
+                }
+            }
+        }
 
         fun bind(platform: Platform, context: Context) {
             binding.btnPlatform.text = platform.name
 
             //All platform's id
-            if (platform == Platform.ALL_PLATFORM) {
-                binding.btnPlatform.backgroundTintList = ContextCompat.getColorStateList(context, R.color.platform_color)
+            if (platform == currentPlatform) {
+                binding.btnPlatform.backgroundTintList =
+                    ContextCompat.getColorStateList(context, R.color.platform_color)
+            } else {
+                binding.btnPlatform.backgroundTintList =
+                    ContextCompat.getColorStateList(context, R.color.text_color_hint)
             }
         }
     }
+
+//    interface OnItemClickListener {
+//        fun onItemClick(platform: Platform)
+//    }
 }

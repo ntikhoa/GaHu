@@ -1,12 +1,15 @@
 package com.ntikhoa.gahu.presentation.game.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.model.Game
+import com.ntikhoa.gahu.business.domain.model.Platform
 import com.ntikhoa.gahu.databinding.ItemGameBinding
 
 class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -19,7 +22,6 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun areContentsTheSame(oldItem: Game, newItem: Game): Boolean {
             return oldItem == newItem
         }
-
     }
 
     private val differ = AsyncListDiffer(
@@ -50,7 +52,7 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return differ.currentList.size
     }
 
-    class GameViewHolder(private val binding: ItemGameBinding) :
+    inner class GameViewHolder(private val binding: ItemGameBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(game: Game) {
             binding.apply {

@@ -47,6 +47,9 @@ constructor(
                     getGames(token)
                 }
             }
+            is GameEvent.SetPlatformFilter -> {
+                gameState.value?.platformIdFilter = event.platformFilter
+            }
         }
     }
 

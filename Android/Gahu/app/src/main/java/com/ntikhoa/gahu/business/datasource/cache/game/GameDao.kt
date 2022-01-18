@@ -1,6 +1,7 @@
 package com.ntikhoa.gahu.business.datasource.cache.game
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao
@@ -12,7 +13,7 @@ interface GameDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertOrReplaceGame(gameEntity: GameEntity)
 
-    @Insert
+    @Insert(onConflict = IGNORE)
     suspend fun insertGamePlatform(gamePlatformEntity: GamePlatformEntity)
 
     @Query("SELECT * FROM platforms")
