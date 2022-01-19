@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.model.Platform
 import com.ntikhoa.gahu.databinding.FragmentGameListBinding
@@ -39,6 +41,11 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     }
 
     private fun initRecyclerView() {
+        initPlatformRv()
+        initGameRv()
+    }
+
+    private fun initPlatformRv() {
         platformAdapter = PlatformAdapter()
         binding.rvPlatform.adapter = platformAdapter
         platformAdapter.setOnItemClickListener {
@@ -50,15 +57,48 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
             viewModel.onTriggerEvent(GameEvent.SetPlatformFilter(platformId))
             viewModel.onTriggerEvent(GameEvent.GetGames())
         }
+    }
 
-
+    private fun initGameRv() {
         gameAdapter = GameAdapter()
         binding.rvGame.adapter = gameAdapter
+
+        binding.rvGame.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastPosition = layoutManager.findLastVisibleItemPosition()
+                if (lastPosition == gameAdapter.itemCount.minus(1)
+                    && viewModel.gameState.value?.isLoading == false
+                    && viewModel.gameState.value?.isExhausted == false
+                ) {
+                    Log.i(TAG, "onScrollStateChanged: getting next page")
+                    viewModel.onTriggerEvent(GameEvent.GetGamesNextPage())
+                }
+            }
+        })
     }
 
     private fun subscribeObserver() {
         subscribePlatformState()
         subscribeGameState()
+    }
+
+    private fun subscribePlatformState() {
+        viewModel.platformState.observe(viewLifecycleOwner, Observer { state ->
+            //displayProgressBar(platformState.isLoading)
+
+            state.platforms?.let {
+                if (it.isNotEmpty()) {
+                    Log.i(TAG, "subscribePlatformState: It get submitted: $it")
+                    platformAdapter.submitList(it.toMutableList())
+                }
+            }
+
+            state.message?.let {
+                handleMessage(it)
+            }
+        })
     }
 
     private fun subscribeGameState() {
@@ -70,23 +110,6 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
                 if (it.isNotEmpty()) {
                     Log.i(TAG, "subscribeGameState: It get submitted: $it")
                     gameAdapter.submitList(it)
-                }
-            }
-
-            state.message?.let {
-                handleMessage(it)
-            }
-        })
-    }
-
-    private fun subscribePlatformState() {
-        viewModel.platformState.observe(viewLifecycleOwner, Observer { state ->
-            //displayProgressBar(platformState.isLoading)
-
-            state.platforms?.let {
-                if (it.isNotEmpty()) {
-                    Log.i(TAG, "subscribePlatformState: It get submitted: $it")
-                    platformAdapter.submitList(it.toMutableList())
                 }
             }
 

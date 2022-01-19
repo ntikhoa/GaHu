@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.ntikhoa.gahu.business.interactor.game.GetGames
 import com.ntikhoa.gahu.business.interactor.game.GetPlatforms
 import com.ntikhoa.gahu.presentation.CancelJob
@@ -44,6 +45,16 @@ constructor(
             }
             is GameEvent.GetGames -> {
                 sessionManager.token?.let { token ->
+                    gameState.value?.page = 1
+                    getGames(token)
+                }
+            }
+            is GameEvent.GetGamesNextPage -> {
+                sessionManager.token?.let { token ->
+                    gameState.value?.let { state ->
+                        state.page = state.page + 1
+                    }
+                    Log.i(TAG, "onTriggerEvent: page ${gameState.value?.page}")
                     getGames(token)
                 }
             }
@@ -87,7 +98,10 @@ constructor(
                 copiedState.isLoading = dataState.isLoading
 
                 dataState.data?.let { games ->
-                    Log.i(TAG, "getGames: $games")
+                    val gson = Gson()
+                    Log.i(TAG, "getGames: ${gson.toJson(games)}")
+                    Log.i(TAG, "getGames: size ${games.size}")
+
                     copiedState.games = games
                 }
 

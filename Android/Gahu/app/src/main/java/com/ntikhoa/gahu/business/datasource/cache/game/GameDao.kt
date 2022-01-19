@@ -25,7 +25,7 @@ interface GameDao {
     @Query(
         """
         SELECT * FROM games
-        LIMIT 10 OFFSET ((:page -1) * 10) 
+        LIMIT (:page * 10)
     """
     )
     suspend fun getGameList(page: Int): List<GameEntity>
@@ -35,7 +35,7 @@ interface GameDao {
          SELECT * FROM games
          JOIN game_platform ON game_id = pk
          WHERE platform_id = :platformId
-         LIMIT 10 OFFSET ((:page -1) * 10)
+         LIMIT (:page * 10)
     """
     )
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)

@@ -25,7 +25,7 @@ class GetGames(
 
         val gamesEntity = getGamesListCache(page, platformId)
         val gamesCache = gamesEntity.map { it.toDomain() }
-        emit(DataState(isLoading = false, data = gamesCache))
+        emit(DataState(isLoading = true, data = gamesCache))
 
         val gamesResponse = gameService.getGames(
             "Bearer $token",
