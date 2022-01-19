@@ -25,6 +25,7 @@ interface GameDao {
     @Query(
         """
         SELECT * FROM games
+        ORDER BY pk
         LIMIT (:page * 10)
     """
     )
@@ -35,6 +36,7 @@ interface GameDao {
          SELECT * FROM games
          JOIN game_platform ON game_id = pk
          WHERE platform_id = :platformId
+         ORDER BY pk 
          LIMIT (:page * 10)
     """
     )

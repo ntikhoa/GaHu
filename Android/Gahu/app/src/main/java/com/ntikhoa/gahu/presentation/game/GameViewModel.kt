@@ -98,10 +98,7 @@ constructor(
                 copiedState.isLoading = dataState.isLoading
 
                 dataState.data?.let { games ->
-                    val gson = Gson()
-                    Log.i(TAG, "getGames: ${gson.toJson(games)}")
-                    Log.i(TAG, "getGames: size ${games.size}")
-
+                    Log.i(TAG, "getGames: $games")
                     copiedState.games = games
                 }
 
