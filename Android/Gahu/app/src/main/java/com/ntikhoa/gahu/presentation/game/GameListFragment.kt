@@ -113,6 +113,11 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
                 }
             }
 
+            if (state.isExhausted) {
+                Log.i(TAG, "subscribeGameState: EXHAUSTED")
+                gameAdapter.exhausted()
+            }
+
             state.message?.let {
                 handleMessage(it)
             }
@@ -121,6 +126,10 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.apply {
+            rvPlatform.adapter = null
+            rvGame.adapter = null
+        }
         _binding = null
         viewModel.cancelJob()
     }

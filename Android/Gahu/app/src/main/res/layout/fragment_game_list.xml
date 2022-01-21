@@ -9,10 +9,10 @@
     tools:context=".presentation.game.GameListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="32dp"
         android:id="@+id/rv_platform"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
         android:background="#00000000"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

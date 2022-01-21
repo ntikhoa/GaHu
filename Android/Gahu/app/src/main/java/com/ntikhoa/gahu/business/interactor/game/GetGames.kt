@@ -5,7 +5,9 @@ import com.ntikhoa.gahu.business.datasource.cache.game.GameEntity
 import com.ntikhoa.gahu.business.datasource.network.game.GahuGameService
 import com.ntikhoa.gahu.business.domain.model.Game
 import com.ntikhoa.gahu.business.domain.model.GameDetail
+import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.domain.util.DataState
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.interactor.handleUseCaseException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -25,7 +27,11 @@ class GetGames(
 
         val gamesEntity = getGamesListCache(page, platformId)
         val gamesCache = gamesEntity.map { it.toDomain() }
-        emit(DataState(isLoading = true, data = gamesCache))
+        var msg: String? = null
+        if (gamesCache.size <= (page - 1) * Constants.PAGE_SIZE)
+            msg = ErrorHandler.EXHAUSTED
+
+        emit(DataState(isLoading = true, data = gamesCache, message = msg))
 
         val gamesResponse = gameService.getGames(
             "Bearer $token",
@@ -45,7 +51,7 @@ class GetGames(
                     data = gamesUpdated
                 )
             )
-        }
+        } ?: emit(DataState.error(gamesResponse.message))
 
     }.catch {
         emit(handleUseCaseException(it))
@@ -55,8 +61,8 @@ class GetGames(
     private suspend fun getGamesListCache(page: Int, platformId: String?):
             List<GameEntity> {
         return platformId?.let {
-            gameDao.getGameListPlatformFilter(page, it)
-        } ?: gameDao.getGameList(page)
+            gameDao.getGameListPlatformFilter(page, Constants.PAGE_SIZE, it)
+        } ?: gameDao.getGameList(page, Constants.PAGE_SIZE)
     }
 
     private suspend fun updateLocalDb(games: List<GameDetail>) {

@@ -8,5 +8,6 @@ class Constants {
         const val DATASTORE_KEY_EMAIL = "email"
         const val EXTRA_LOGIN = "extra_login"
         const val NETWORK_ERROR_MSG = "Please check internet connection"
+        const val PAGE_SIZE = 10
     }
 }

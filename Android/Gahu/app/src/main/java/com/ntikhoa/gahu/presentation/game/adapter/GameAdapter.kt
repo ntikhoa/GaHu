@@ -8,11 +8,31 @@ import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.model.Author
 import com.ntikhoa.gahu.business.domain.model.Game
 import com.ntikhoa.gahu.business.domain.model.Platform
+import com.ntikhoa.gahu.databinding.ItemExhaustedBinding
 import com.ntikhoa.gahu.databinding.ItemGameBinding
 
 class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private companion object {
+        const val VIEW_ITEM = 0
+        const val VIEW_EXHAUSTED = 1
+
+        val EXHAUSTED_OBJ = Game(
+            "-1",
+            "EXHASTED",
+            "",
+            "",
+            "",
+            Author(
+                "-1",
+                "",
+                ""
+            )
+        )
+    }
 
     private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Game>() {
         override fun areItemsTheSame(oldItem: Game, newItem: Game): Boolean {
@@ -34,11 +54,36 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         differ.submitList(newList)
     }
 
+    fun exhausted() {
+        val newList = differ.currentList.toMutableList()
+        if (newList[newList.size - 1] != EXHAUSTED_OBJ) {
+            newList.add(EXHAUSTED_OBJ)
+        }
+        differ.submitList(newList)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_game, parent, false)
-        val binding = ItemGameBinding.bind(view)
-        return GameViewHolder(binding)
+        return when (viewType) {
+            VIEW_EXHAUSTED -> {
+                val inflater = LayoutInflater.from(parent.context)
+                val view = inflater.inflate(R.layout.item_exhausted, parent, false)
+                val binding = ItemExhaustedBinding.bind(view)
+                ExhaustedViewHolder(binding)
+            }
+
+            else -> {
+                val inflater = LayoutInflater.from(parent.context)
+                val view = inflater.inflate(R.layout.item_game, parent, false)
+                val binding = ItemGameBinding.bind(view)
+                GameViewHolder(binding)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (differ.currentList[position] == EXHAUSTED_OBJ)
+            VIEW_EXHAUSTED
+        else VIEW_ITEM
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

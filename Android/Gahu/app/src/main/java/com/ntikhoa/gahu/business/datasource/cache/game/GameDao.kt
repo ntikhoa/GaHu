@@ -26,10 +26,10 @@ interface GameDao {
         """
         SELECT * FROM games
         ORDER BY pk
-        LIMIT (:page * 10)
+        LIMIT (:page * :pageSize)
     """
     )
-    suspend fun getGameList(page: Int): List<GameEntity>
+    suspend fun getGameList(page: Int, pageSize: Int): List<GameEntity>
 
     @Query(
         """
@@ -37,9 +37,13 @@ interface GameDao {
          JOIN game_platform ON game_id = pk
          WHERE platform_id = :platformId
          ORDER BY pk 
-         LIMIT (:page * 10)
+         LIMIT (:page * :pageSize)
     """
     )
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    suspend fun getGameListPlatformFilter(page: Int, platformId: String): List<GameEntity>
+    suspend fun getGameListPlatformFilter(
+        page: Int,
+        pageSize: Int,
+        platformId: String
+    ): List<GameEntity>
 }

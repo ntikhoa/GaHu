@@ -7,6 +7,7 @@ class ErrorHandler {
         const val EMAIL_ALREADY_EXIST = "Email already exist"
         const val DATASTORE_VALUE_NOT_FOUND = "value not found"
         const val CHECK_PREV_AUTH_FAILED = "Check previous auth failed"
+        const val EXHAUSTED = "Exhausted"
         const val NETWORK_ERROR =
             "Unable to resolve host \"gahu.herokuapp.com\": No address associated with hostname"
     }

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.interactor.game.GetGames
 import com.ntikhoa.gahu.business.interactor.game.GetPlatforms
 import com.ntikhoa.gahu.presentation.CancelJob
@@ -45,7 +46,7 @@ constructor(
             }
             is GameEvent.GetGames -> {
                 sessionManager.token?.let { token ->
-                    gameState.value?.page = 1
+                    resetPage()
                     getGames(token)
                 }
             }
@@ -62,6 +63,11 @@ constructor(
                 gameState.value?.platformIdFilter = event.platformFilter
             }
         }
+    }
+
+    private fun resetPage() {
+        gameState.value?.page = 1
+        gameState.value?.isExhausted = false
     }
 
     private fun getPlatforms(token: String) {
@@ -104,6 +110,9 @@ constructor(
 
                 dataState.message?.let { msg ->
                     Log.i(TAG, "getGamesMsg: $msg")
+                    if (msg == ErrorHandler.EXHAUSTED)
+                        copiedState.isExhausted = true
+
                     copiedState.message = msg
                 }
 
