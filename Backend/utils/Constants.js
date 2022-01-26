@@ -20,5 +20,6 @@ module.exports = {
     MULTER_ERROR_CODE_LIMIT_SIZE: "LIMIT_FILE_SIZE",
     IMAGE_RATIO: 1.5,
     ADMIN_EMAILS: ['ntikhoa123@gmail.com', 'ntikhoa@gmail.com'],
-    PER_PAGE: 10
+    PER_PAGE: 10,
+    BASE_TROPHY_CRAWL_URL: 'https://psnprofiles.com/'
 }

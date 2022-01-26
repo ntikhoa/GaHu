@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const platformRoutes = require('./routes/platform');
 const gameRoutes = require('./routes/game');
+const trophyRoutes = require('./routes/trophy');
 const Constants = require('./utils/Constants');
 const ExpressError = require('./utils/ExpressError');
 
@@ -26,6 +27,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/platforms', platformRoutes);
 app.use('/games', gameRoutes);
+app.use('/trophies', trophyRoutes);
 
 app.use(helmet());
 app.use(compression());
