@@ -17,6 +17,8 @@ function getTotalProfile($) {
     const stat = $('.stats .stat')
 
     mainProfile = {
+        avatar: $('.user-bar .avatar img').attr('src'),
+        username: profileBar.find('.username').text(),
         trophyLevel: profileBar.find('.trophy-count li').text(),
         totalTrophies: profileBar.find('.total').text(),
         platinum: profileBar.find('.platinum').text(),
@@ -29,6 +31,8 @@ function getTotalProfile($) {
     }
 
     for (const property in mainProfile) {
+        if (property == 'avatar' || property == 'username')
+            continue
         if (property == 'completion') {
             mainProfile[property] = parseFloat(mainProfile[property].replace(/[^\d.-]/g, ''))
         } else {
