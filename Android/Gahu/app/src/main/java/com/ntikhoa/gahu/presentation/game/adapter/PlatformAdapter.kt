@@ -81,7 +81,7 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
             //All platform's id
             if (platform == currentPlatform) {
                 binding.btnPlatform.backgroundTintList =
-                    ContextCompat.getColorStateList(context, R.color.platform_color)
+                    ContextCompat.getColorStateList(context, R.color.btn_color)
             } else {
                 binding.btnPlatform.backgroundTintList =
                     ContextCompat.getColorStateList(context, R.color.text_color_hint)

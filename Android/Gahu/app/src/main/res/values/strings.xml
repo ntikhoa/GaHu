@@ -12,4 +12,10 @@
     <string name="btn_logout">Logout</string>
     <string name="tv_change_password">Change password</string>
     <string name="cd_exhausted">exhausted</string>
+    <string name="trophy">Trophy</string>
+    <string name="psn_profile">PSN Profile</string>
+    <string name="games_played">GAMES PLAYED</string>
+    <string name="earned_trophies">EARNED TROPHIES</string>
+    <string name="world_rank">WORLD RANK</string>
+    <string name="recently_played">Recently played</string>
 </resources>

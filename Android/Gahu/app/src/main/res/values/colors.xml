@@ -8,13 +8,18 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="background">#181A1F</color>
-    <color name="box_color">#272A33</color>
+    <color name="sth">#121516</color>
+    <color name="background">#272A33</color>
+    <color name="box_color">#181A1F</color>
+    <color name="bottom_nav">#313440</color>
     <color name="text_color_hint">#6C6D71</color>
     <color name="white_200">#B2B2B2</color>
     <color name="red_error">#EC3939</color>
-    <color name="btn_color">#4175F1</color>
-    <color name="text_color">#5B9BFF</color>
+    <color name="btn_color">#5B9BFF</color>
     <color name="ripple_color">#42ffffff</color>
-    <color name="platform_color">#B44BF1</color>
+    <color name="platinum">#7a96d1</color>
+    <color name="gold">#cd9a46</color>
+    <color name="silver">#d6d6d6</color>
+    <color name="bronze">#b16336</color>
+<!--    <color name="platform_color">#B44BF1</color>-->
 </resources>

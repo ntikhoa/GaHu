@@ -7,6 +7,11 @@
         android:title="@string/home" />
 
     <item
+        android:id="@+id/trophy_nav_graph"
+        android:icon="@drawable/trophy"
+        android:title="@string/trophy" />
+
+    <item
         android:id="@+id/account_nav_graph"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/account" />

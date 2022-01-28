@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/trophy_nav_graph"
+    app:startDestination="@id/trophyFragment">
+
+    <fragment
+        android:id="@+id/trophyFragment"
+        android:name="com.ntikhoa.gahu.presentation.trophy.TrophyFragment"
+        android:label="fragment_trophy"
+        tools:layout="@layout/fragment_trophy" />
+</navigation>
