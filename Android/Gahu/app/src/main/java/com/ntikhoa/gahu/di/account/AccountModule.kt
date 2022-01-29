@@ -17,7 +17,7 @@ object AccountModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideGetAccount(
+    fun providesGetAccount(
         accountService: GahuAccountService,
         accountDao: AccountDao
     ): GetAccount {
@@ -29,7 +29,7 @@ object AccountModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideGetAccountCache(
+    fun providesGetAccountCache(
         accountDao: AccountDao
     ): GetAccountCache {
         return GetAccountCache(

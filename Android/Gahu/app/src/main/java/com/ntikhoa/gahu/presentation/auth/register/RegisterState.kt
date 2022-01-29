@@ -2,6 +2,6 @@ package com.ntikhoa.gahu.presentation.auth.register
 
 
 data class RegisterState(
-    val isLoading: Boolean = false,
-    val message: String? = null
+    var isLoading: Boolean = false,
+    var message: String? = null
 )

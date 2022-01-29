@@ -17,7 +17,7 @@ object GameModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideGetPlatforms(
+    fun providesGetPlatforms(
         gameDao: GameDao,
         gameService: GahuGameService
     ): GetPlatforms {
@@ -29,7 +29,7 @@ object GameModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideGetGames(
+    fun providesGetGames(
         gameDao: GameDao,
         gameService: GahuGameService
     ): GetGames {

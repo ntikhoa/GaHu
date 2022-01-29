@@ -21,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     private val TAG = "GameListFragment"
 
-    private val viewModel: GameViewModel by viewModels()
+    private val listViewModel: GameListViewModel by viewModels()
 
     private var _binding: FragmentGameListBinding? = null
     private val binding get() = _binding!!
@@ -36,8 +36,8 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
         initRecyclerView()
 
         subscribeObserver()
-        viewModel.onTriggerEvent(GameEvent.GetPlatforms())
-        viewModel.onTriggerEvent(GameEvent.GetGames())
+        listViewModel.onTriggerEvent(GameEvent.GetPlatforms())
+        listViewModel.onTriggerEvent(GameEvent.GetGames())
     }
 
     private fun initRecyclerView() {
@@ -54,8 +54,8 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
             if (it == Platform.ALL_PLATFORM) {
                 platformId = null
             }
-            viewModel.onTriggerEvent(GameEvent.SetPlatformFilter(platformId))
-            viewModel.onTriggerEvent(GameEvent.GetGames())
+            listViewModel.onTriggerEvent(GameEvent.SetPlatformFilter(platformId))
+            listViewModel.onTriggerEvent(GameEvent.GetGames())
         }
     }
 
@@ -69,11 +69,11 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastPosition = layoutManager.findLastVisibleItemPosition()
                 if (lastPosition == gameAdapter.itemCount.minus(1)
-                    && viewModel.gameState.value?.isLoading == false
-                    && viewModel.gameState.value?.isExhausted == false
+                    && listViewModel.gameState.value?.isLoading == false
+                    && listViewModel.gameState.value?.isExhausted == false
                 ) {
                     Log.i(TAG, "onScrollStateChanged: getting next page")
-                    viewModel.onTriggerEvent(GameEvent.GetGamesNextPage())
+                    listViewModel.onTriggerEvent(GameEvent.GetGamesNextPage())
                 }
             }
         })
@@ -85,7 +85,7 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     }
 
     private fun subscribePlatformState() {
-        viewModel.platformState.observe(viewLifecycleOwner, Observer { state ->
+        listViewModel.platformState.observe(viewLifecycleOwner, Observer { state ->
             //displayProgressBar(platformState.isLoading)
 
             state.platforms?.let {
@@ -102,7 +102,7 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     }
 
     private fun subscribeGameState() {
-        viewModel.gameState.observe(viewLifecycleOwner, Observer { state ->
+        listViewModel.gameState.observe(viewLifecycleOwner, Observer { state ->
 
             displayProgressBar(state.isLoading)
 
@@ -131,6 +131,6 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
             rvGame.adapter = null
         }
         _binding = null
-        viewModel.cancelJob()
+        listViewModel.cancelJob()
     }
 }

@@ -15,6 +15,7 @@ import com.ntikhoa.gahu.business.datasource.datastore.AppDataStoreImpl
 import com.ntikhoa.gahu.business.datasource.network.account.GahuAccountService
 import com.ntikhoa.gahu.business.datasource.network.auth.GahuAuthService
 import com.ntikhoa.gahu.business.datasource.network.game.GahuGameService
+import com.ntikhoa.gahu.business.datasource.network.trophy.GahuTrophyService
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.Module
@@ -35,13 +36,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverter(): Gson {
+    fun providesGsonConverter(): Gson {
         return GsonBuilder().create()
     }
 
     @Provides
     @Singleton
-    fun provideRetrofitBuilder(gson: Gson): Retrofit.Builder {
+    fun providesRetrofitBuilder(gson: Gson): Retrofit.Builder {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -49,7 +50,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(app: Application): AppDatabase {
+    fun providesAppDatabase(app: Application): AppDatabase {
         return Room
             .databaseBuilder(app, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
             .fallbackToDestructiveMigration()
@@ -58,43 +59,49 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAccountDao(db: AppDatabase): AccountDao {
+    fun providesAccountDao(db: AppDatabase): AccountDao {
         return db.getAccountDao()
     }
 
     @Provides
     @Singleton
-    fun provideGameDao(db: AppDatabase): GameDao {
+    fun providesGameDao(db: AppDatabase): GameDao {
         return db.getGameDao()
     }
 
     @Provides
     @Singleton
-    fun provideAuthService(retrofitBuilder: Retrofit.Builder): GahuAuthService {
+    fun providesAuthService(retrofitBuilder: Retrofit.Builder): GahuAuthService {
         return retrofitBuilder.build().create(GahuAuthService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAccountService(retrofitBuilder: Retrofit.Builder): GahuAccountService {
+    fun providesAccountService(retrofitBuilder: Retrofit.Builder): GahuAccountService {
         return retrofitBuilder.build().create(GahuAccountService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideGameService(retrofitBuilder: Retrofit.Builder): GahuGameService {
+    fun providesGameService(retrofitBuilder: Retrofit.Builder): GahuGameService {
         return retrofitBuilder.build().create(GahuGameService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideSessionManager(): SessionManager {
+    fun providesTrophyService(retrofitBuilder: Retrofit.Builder): GahuTrophyService {
+        return retrofitBuilder.build().create(GahuTrophyService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSessionManager(): SessionManager {
         return SessionManager()
     }
 
     @Provides
     @Singleton
-    fun provideDataStore(
+    fun providesDataStore(
         app: Application
     ): AppDataStore {
         return AppDataStoreImpl(app)

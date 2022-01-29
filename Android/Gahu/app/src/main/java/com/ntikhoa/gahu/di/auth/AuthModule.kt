@@ -23,7 +23,7 @@ object AuthModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideLogin(
+    fun providesLogin(
         authService: GahuAuthService,
         accountDao: AccountDao,
         appDataStore: AppDataStore
@@ -37,7 +37,7 @@ object AuthModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideRegister(
+    fun providesRegister(
         authService: GahuAuthService,
         accountDao: AccountDao,
         appDataStore: AppDataStore
@@ -51,7 +51,7 @@ object AuthModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideCheckPrevAuth(
+    fun providesCheckPrevAuth(
         accountDao: AccountDao,
         appDataStore: AppDataStore
     ): CheckPrevAuth {
@@ -63,7 +63,7 @@ object AuthModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideLogout(
+    fun providesLogout(
         accountDao: AccountDao,
         appDataStore: AppDataStore
     ): Logout {

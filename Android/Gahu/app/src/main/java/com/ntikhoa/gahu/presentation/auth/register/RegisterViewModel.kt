@@ -53,15 +53,19 @@ constructor(
                 password,
                 confirmPassword
             ).onEach { dataState ->
-                this._state.value = _state.value?.copy(isLoading = dataState.isLoading)
+                val copiedState = it.copy()
+
+                copiedState.isLoading = dataState.isLoading
 
                 dataState.data?.let { data ->
                     sessionManager.token = data.token
                 }
 
                 dataState.message?.let { message ->
-                    _state.value = _state.value?.copy(message = message)
+                    copiedState.message = message
                 }
+
+                _state.value = copiedState
 
             }.launchIn(viewModelScope)
         }

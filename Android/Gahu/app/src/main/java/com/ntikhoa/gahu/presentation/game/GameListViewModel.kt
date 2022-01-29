@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class GameViewModel
+class GameListViewModel
 @Inject
 constructor(
     private val getPlatformsUseCase: GetPlatforms,
@@ -71,9 +71,11 @@ constructor(
     }
 
     private fun getPlatforms(token: String) {
-        _platformState.value?.copy()?.let { copiedState ->
+        _platformState.value?.let {
             platformJob?.cancel()
             platformJob = getPlatformsUseCase(token).onEach { dataState ->
+
+                val copiedState = it.copy()
 
                 copiedState.isLoading = dataState.isLoading
 
@@ -93,13 +95,15 @@ constructor(
     }
 
     private fun getGames(token: String) {
-        _gameState.value?.copy()?.let { copiedState ->
+        _gameState.value?.let {
             gameJob?.cancel()
             gameJob = getGamesUseCase(
                 token,
-                copiedState.page,
-                copiedState.platformIdFilter
+                it.page,
+                it.platformIdFilter
             ).onEach { dataState ->
+
+                val copiedState = it.copy()
 
                 copiedState.isLoading = dataState.isLoading
 
