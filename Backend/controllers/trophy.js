@@ -3,11 +3,9 @@ module.exports.crawlTrophy = (req, res) => {
 
     const profile = getTotalProfile($)
     const games = getAllTrophies($)
+    profile.recent_played = games
     res.status(200).json({
-        data: {
-            profile: profile,
-            recent_played: games
-        },
+        data: profile,
         message: "Get trophies successfully"
     })
 }
