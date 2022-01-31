@@ -7,3 +7,5 @@ fun String?.isValidEmail() =
 
 fun CharSequence?.isValidEmail() =
     !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+fun Int.formatThousand() = "%,d".format(this)

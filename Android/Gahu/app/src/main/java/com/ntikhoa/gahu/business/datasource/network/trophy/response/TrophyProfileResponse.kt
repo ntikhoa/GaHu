@@ -3,8 +3,9 @@ package com.ntikhoa.gahu.business.datasource.network.trophy.response
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.ntikhoa.gahu.business.domain.model.Trophy
+import com.ntikhoa.gahu.business.domain.model.TrophyProfile
 
-data class TrophyResponse(
+data class TrophyProfileResponse(
 
     @SerializedName("avatar")
     @Expose
@@ -48,20 +49,27 @@ data class TrophyResponse(
 
     @SerializedName("worldRank")
     @Expose
-    val worldRank: Int
+    val worldRank: Int,
+
+    @SerializedName("recent_played")
+    @Expose
+    val recentPlayed: List<TrophyGameResponse>
 ) {
-    fun toDomain(): Trophy {
-        return Trophy(
+    fun toDomain(): TrophyProfile {
+        return TrophyProfile(
             username = username,
             avatar = avatar,
             trophyLevel = trophyLevel,
-            platinum = platinum,
-            gold = gold,
-            silver = silver,
-            bronze = bronze,
+            trophy = Trophy(
+                totalTrophies = totalTrophies,
+                platinum = platinum,
+                gold = gold,
+                silver = silver,
+                bronze = bronze
+            ),
             gamesPlayed = gamesPlayed,
-            totalTrophies = totalTrophies,
-            worldRank = worldRank
+            worldRank = worldRank,
+            recentPlayed = recentPlayed.map { it.toDomain() }
         )
     }
 }

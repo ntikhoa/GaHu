@@ -1,9 +1,9 @@
 package com.ntikhoa.gahu.presentation.trophy
 
-import com.ntikhoa.gahu.business.domain.model.Trophy
+import com.ntikhoa.gahu.business.domain.model.TrophyProfile
 
 data class TrophyState(
     var isLoading: Boolean = false,
-    var trophy: Trophy? = null,
+    var trophyProfile: TrophyProfile? = null,
     var message: String? = null
 )

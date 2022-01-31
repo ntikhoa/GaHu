@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.ntikhoa.gahu.business.interactor.trophy.GetTrophy
 import com.ntikhoa.gahu.presentation.CancelJob
 import com.ntikhoa.gahu.presentation.OnTriggerEvent
-import com.ntikhoa.gahu.presentation.game.GameState
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -52,7 +51,7 @@ constructor(
 
                 dataState.data?.let { trophy ->
                     Log.i(TAG, "getTrophy: $trophy")
-                    copiedState.trophy = trophy
+                    copiedState.trophyProfile = trophy
                 }
 
                 dataState.message?.let { msg ->
