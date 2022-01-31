@@ -22,6 +22,7 @@
             android:src="@drawable/level_gold3" />
 
         <TextView
+            android:id="@+id/tv_trophy_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -50,6 +51,7 @@
             android:src="@drawable/platinum" />
 
         <TextView
+            android:id="@+id/tv_platinum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -77,6 +79,7 @@
             android:src="@drawable/gold" />
 
         <TextView
+            android:id="@+id/tv_gold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -104,6 +107,7 @@
             android:src="@drawable/silver" />
 
         <TextView
+            android:id="@+id/tv_silver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -129,6 +133,7 @@
             android:src="@drawable/bronze" />
 
         <TextView
+            android:id="@+id/tv_bronze"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

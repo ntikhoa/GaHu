@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.model.Author
@@ -105,6 +106,7 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     //.setDefaultRequestOptions(requestOptions) //for cache image
                     .load(game.imageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(ivGameImage)
 
                 tvGameTitle.text = game.title
