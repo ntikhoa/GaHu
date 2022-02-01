@@ -17,9 +17,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/iv_trophy_level"
             android:layout_width="@dimen/trophy_icon"
             android:layout_height="@dimen/trophy_icon"
-            android:src="@drawable/level_gold3" />
+            android:src="@drawable/level_bronze1" />
 
         <TextView
             android:id="@+id/tv_trophy_level"

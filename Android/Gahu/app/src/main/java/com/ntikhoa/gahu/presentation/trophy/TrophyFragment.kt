@@ -2,6 +2,7 @@ package com.ntikhoa.gahu.presentation.trophy
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -53,20 +54,68 @@ class TrophyFragment : BaseFragment(R.layout.fragment_trophy) {
                 .centerCrop()
                 .into(ivAvatar)
 
-            //"%,d".format(trophy.totalTrophies.toString())
-
             tvUsername.text = trophyProfile.username
             tvEarnedTrophies.text = trophyProfile.trophy.totalTrophies.formatThousand()
             tvGamesPlayed.text = trophyProfile.gamesPlayed.formatThousand()
             tvWorldRank.text = trophyProfile.worldRank.formatThousand()
 
+            setTrophyLevel(trophyProfile.trophyLevel)
             layoutTrophy.apply {
-                tvTrophyLevel.text = trophyProfile.trophyLevel.toString()
                 tvPlatinum.text = trophyProfile.trophy.platinum.toString()
                 tvGold.text = trophyProfile.trophy.gold.toString()
                 tvSilver.text = trophyProfile.trophy.silver.toString()
                 tvBronze.text = trophyProfile.trophy.bronze.toString()
             }
+        }
+    }
+
+    private fun setTrophyLevel(level: Int) {
+        binding.layoutTrophy.tvTrophyLevel.text = level.toString()
+        when (level) {
+            in 1..99 -> {
+                setTrophyLevelView(R.drawable.level_bronze1, R.color.bronze)
+            }
+            in 100..199 -> {
+                setTrophyLevelView(R.drawable.level_bronze2, R.color.bronze)
+            }
+            in 200..299 -> {
+                setTrophyLevelView(R.drawable.level_bronze3, R.color.bronze)
+            }
+
+            in 300..399 -> {
+                setTrophyLevelView(R.drawable.level_silver1, R.color.silver)
+            }
+            in 400..499 -> {
+                setTrophyLevelView(R.drawable.level_silver2, R.color.silver)
+            }
+            in 500..599 -> {
+                setTrophyLevelView(R.drawable.level_silver3, R.color.silver)
+            }
+
+            in 600..699 -> {
+                setTrophyLevelView(R.drawable.level_gold1, R.color.gold)
+            }
+            in 700..799 -> {
+                setTrophyLevelView(R.drawable.level_gold2, R.color.gold)
+            }
+            in 800..998 -> {
+                setTrophyLevelView(R.drawable.level_gold3, R.color.gold)
+            }
+            999 -> {
+                setTrophyLevelView(R.drawable.level_platinum, R.color.platinum)
+            }
+        }
+    }
+
+    private fun setTrophyLevelView(resId: Int, colorRes: Int) {
+        binding.layoutTrophy.apply {
+            ivTrophyLevel.setImageResource(resId)
+            tvTrophyLevel.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    colorRes
+                )
+            )
         }
     }
 
