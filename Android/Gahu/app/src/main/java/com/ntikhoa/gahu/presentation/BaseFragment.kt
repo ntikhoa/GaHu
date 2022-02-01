@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.ntikhoa.gahu.business.domain.util.Constants
 import com.ntikhoa.gahu.business.domain.util.Constants.Companion.NETWORK_ERROR_MSG
+import com.ntikhoa.gahu.business.domain.util.Constants.Companion.TIMEOUT_ERROR_MSG
 import com.ntikhoa.gahu.business.domain.util.Constants.Companion.UNKNOWN_ERROR
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler
 import com.ntikhoa.gahu.business.domain.util.ErrorHandler.Companion.NETWORK_ERROR
@@ -34,6 +35,10 @@ abstract class BaseFragment(
         (activity as BaseActivity).unknownError()
     }
 
+    private fun timeoutError() {
+        (activity as BaseActivity).timeoutError()
+    }
+
     open fun handleMessage(message: String) {
         when (message) {
             UNKNOWN_ERROR -> {
@@ -41,6 +46,9 @@ abstract class BaseFragment(
             }
             NETWORK_ERROR -> {
                 networkError()
+            }
+            TIMEOUT_ERROR_MSG -> {
+                timeoutError()
             }
         }
     }

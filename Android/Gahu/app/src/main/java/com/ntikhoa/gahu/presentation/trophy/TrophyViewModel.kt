@@ -50,7 +50,7 @@ constructor(
                 copiedState.isLoading = dataState.isLoading
 
                 dataState.data?.let { trophy ->
-                    Log.i(TAG, "getTrophy: $trophy")
+                    Log.i(TAG, "getTrophy: ${trophy.recentPlayed}")
                     copiedState.trophyProfile = trophy
                 }
 
