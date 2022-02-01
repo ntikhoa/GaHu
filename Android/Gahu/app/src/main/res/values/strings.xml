@@ -18,4 +18,6 @@
     <string name="earned_trophies">EARNED TROPHIES</string>
     <string name="world_rank">WORLD RANK</string>
     <string name="recently_played">Recently played</string>
+    <string name="trophies">Trophies</string>
+    <string name="earned">Earned</string>
 </resources>

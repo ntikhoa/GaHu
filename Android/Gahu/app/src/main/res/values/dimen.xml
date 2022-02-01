@@ -3,5 +3,5 @@
     <dimen name="box_corner_radius">20dp</dimen>
     <dimen name="auth_horizontal_margin">36dp</dimen>
     <dimen name="trophy_icon">50dp</dimen>
-    <dimen name="avatar">100dp</dimen>
+    <dimen name="avatar">80dp</dimen>
 </resources>
