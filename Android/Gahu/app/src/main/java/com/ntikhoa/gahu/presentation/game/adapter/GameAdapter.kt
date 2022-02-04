@@ -107,6 +107,7 @@ class GameAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     .load(game.imageUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
                     .into(ivGameImage)
 
                 tvGameTitle.text = game.title

@@ -1,5 +1,6 @@
 package com.ntikhoa.gahu.business.interactor.game
 
+import android.util.Log
 import com.ntikhoa.gahu.business.datasource.cache.game.GameDao
 import com.ntikhoa.gahu.business.datasource.network.game.GahuGameService
 import com.ntikhoa.gahu.business.domain.model.Platform
@@ -13,7 +14,6 @@ class GetPlatforms(
     private val gameDao: GameDao,
     private val gameService: GahuGameService
 ) {
-
     /**
      * Get from cache
      * Get from network
@@ -24,12 +24,8 @@ class GetPlatforms(
         emit(DataState.loading())
         val platformsEntity = gameDao.getPlatforms()
 
-        var platformsCache: List<Platform>? = null
-        platformsEntity?.let { entities ->
-            val platforms = entities.map { it.toDomain() }
-            emit(DataState(data = platforms, isLoading = true))
-            platformsCache = platforms
-        }
+        val platformsCache = platformsEntity.map { it.toDomain() }
+        emit(DataState(data = platformsCache, isLoading = true))
 
         val response = gameService.getPlatforms("Bearer $token")
         response.data?.let { platformsResponse ->
@@ -37,7 +33,7 @@ class GetPlatforms(
 
             updateCache(platforms)
 
-            platformsCache?.let { platformsCache ->
+            if (platformsCache.isNotEmpty()) {
                 deleteInvalidCache(platforms, platformsCache)
             }
 
@@ -66,7 +62,7 @@ class GetPlatforms(
         val platformsCacheId = platformsCache.map { it.id }
 
         val filterIds = platformsCacheId.filter {
-            platformsId.indexOf(it) != -1
+            platformsId.indexOf(it) == -1
         }
 
         for (filterId in filterIds) {

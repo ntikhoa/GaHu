@@ -34,6 +34,10 @@ data class TrophyGameResponse(
     @Expose
     val title: String,
 
+    @SerializedName("slug")
+    @Expose
+    val slug: String,
+
     @SerializedName("total")
     @Expose
     val total: Int
@@ -41,11 +45,12 @@ data class TrophyGameResponse(
     fun toDomain(): TrophyGame {
         return TrophyGame(
             title = title,
+            slug = slug,
             imageUrl = image,
             got = got,
             trophy = Trophy(
                 totalTrophies = total,
-                platinum = if (isPlat) 1 else 0,  //One game only has one platinum trophy
+                platinum = if (isPlat) 1 else 0,  //Each game only has one platinum trophy
                 gold = gold,
                 silver = silver,
                 bronze = bronze

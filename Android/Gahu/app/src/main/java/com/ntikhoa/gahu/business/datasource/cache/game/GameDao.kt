@@ -17,7 +17,7 @@ interface GameDao {
     suspend fun insertGamePlatform(gamePlatformEntity: GamePlatformEntity)
 
     @Query("SELECT * FROM platforms")
-    suspend fun getPlatforms(): List<PlatformEntity>?
+    suspend fun getPlatforms(): List<PlatformEntity>
 
     @Query("DELETE FROM platforms WHERE _pk = :pk")
     suspend fun deletePlatformById(pk: String)

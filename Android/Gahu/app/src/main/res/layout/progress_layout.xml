@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ProgressBar
-        android:id="@+id/progressBarRating"
+        android:id="@+id/pb_completion"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:indeterminateOnly="false"
@@ -18,16 +18,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textViewRate"
+        android:id="@+id/tv_completion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/progressBarRating"
-        app:layout_constraintEnd_toEndOf="@+id/progressBarRating"
-        app:layout_constraintStart_toStartOf="@+id/progressBarRating"
-        app:layout_constraintTop_toTopOf="@+id/progressBarRating"
+        app:layout_constraintBottom_toBottomOf="@+id/pb_completion"
+        app:layout_constraintEnd_toEndOf="@+id/pb_completion"
+        app:layout_constraintStart_toStartOf="@+id/pb_completion"
+        app:layout_constraintTop_toTopOf="@+id/pb_completion"
         tools:text="86%" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

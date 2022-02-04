@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <include
+        android:id="@+id/item_game"
         layout="@layout/item_game"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -54,6 +55,7 @@
         </LinearLayout>
 
         <include
+            android:id="@+id/layout_completion"
             layout="@layout/progress_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -79,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Available"
+                android:text="@string/available"
                 android:textColor="@color/white" />
 
         </LinearLayout>
@@ -89,7 +91,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp">
 
         <LinearLayout
             android:id="@+id/ll_platinum_trophy"

@@ -20,4 +20,5 @@
     <string name="recently_played">Recently played</string>
     <string name="trophies">Trophies</string>
     <string name="earned">Earned</string>
+    <string name="available">Available</string>
 </resources>

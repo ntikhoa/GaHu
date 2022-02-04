@@ -8,10 +8,12 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.ntikhoa.gahu.R
+import com.ntikhoa.gahu.business.domain.model.TrophyGame
 import com.ntikhoa.gahu.business.domain.model.TrophyProfile
 import com.ntikhoa.gahu.business.interactor.util.formatThousand
 import com.ntikhoa.gahu.databinding.FragmentTrophyBinding
 import com.ntikhoa.gahu.presentation.BaseFragment
+import com.ntikhoa.gahu.presentation.trophy.adapter.TrophyGameAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,9 +24,14 @@ class TrophyFragment : BaseFragment(R.layout.fragment_trophy) {
 
     private val viewModel: TrophyViewModel by viewModels()
 
+    private lateinit var adapter: TrophyGameAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTrophyBinding.bind(view)
+
+        adapter = TrophyGameAdapter()
+        binding.rvTrophyGame.adapter = adapter
 
         subscribeObserver()
 
@@ -37,6 +44,7 @@ class TrophyFragment : BaseFragment(R.layout.fragment_trophy) {
 
             dataState.trophyProfile?.let {
                 setTrophyView(it)
+                adapter.submitList(it.recentPlayed)
             }
 
             dataState.message?.let {
