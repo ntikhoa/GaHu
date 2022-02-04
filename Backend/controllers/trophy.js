@@ -57,7 +57,8 @@ function getAllTrophies($) {
 
         const gameEntity = {
             title: $(game).find('.title').text(),
-            image: $(game).find('.game img').attr('src'),
+            slug: $(game).find('.title').attr('href'),
+            image: $(game).find('.game source').attr('srcset').split(' ')[1],
             isPlat: $(game).attr().class == 'platinum',
             got: $(number[0]).text(),
             total: $(number[1]).text(),
