@@ -12,13 +12,23 @@ open class Game(
     val author: Author
 ) {
     override fun equals(other: Any?): Boolean {
-        if (other is Game)
-            return (id == other.id
+        return if (other is Game)
+            (id == other.id
                     && title == other.title
                     && releaseDate == other.releaseDate
                     && imageUrl == other.imageUrl
                     && description == other.description
                     && author == other.author)
-        else return false
+        else false
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + releaseDate.hashCode()
+        result = 31 * result + imageUrl.hashCode()
+        result = 31 * result + description.hashCode()
+        result = 31 * result + author.hashCode()
+        return result
     }
 }
