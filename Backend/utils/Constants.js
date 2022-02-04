@@ -18,7 +18,7 @@ module.exports = {
     UNSUPPORTED_MEDIA_TYPE: "Unsupported Media Type",
     FILE_MAX_SIZE: 1_048_576,  //bytes => 1MB
     MULTER_ERROR_CODE_LIMIT_SIZE: "LIMIT_FILE_SIZE",
-    IMAGE_RATIO: 1.5,
+    IMAGE_RATIO: 2,
     ADMIN_EMAILS: ['ntikhoa123@gmail.com', 'ntikhoa@gmail.com'],
     PER_PAGE: 10,
     BASE_TROPHY_CRAWL_URL: 'https://psnprofiles.com/'

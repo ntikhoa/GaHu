@@ -41,7 +41,7 @@ const validateImageRatio = (imagePath) => {
     const ratio = imageDimension.width / imageDimension.height;
     if (ratio < (Constants.IMAGE_RATIO - 0.2)
         || ratio > (Constants.IMAGE_RATIO + 0.2)) {
-        throw new ExpressError('Invalid image ratio', 400);
+        throw new ExpressError('Image ratio should be around ' + Constants.IMAGE_RATIO, 400);
     }
 }
 
