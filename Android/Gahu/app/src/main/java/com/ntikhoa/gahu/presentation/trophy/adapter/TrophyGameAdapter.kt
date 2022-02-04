@@ -49,9 +49,9 @@ class TrophyGameAdapter : ListAdapter<TrophyGame, TrophyGameAdapter.TrophyGameVi
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
-                    .into(ivGameImage)
+                    .into(itemGame.ivGameImage)
 
-                tvGameTitle.text = trophyGame.title
+                itemGame.tvGameTitle.text = trophyGame.title
 
                 tvEarned.text = trophyGame.got.toString()
                 tvTotal.text = trophyGame.trophy.totalTrophies.toString()

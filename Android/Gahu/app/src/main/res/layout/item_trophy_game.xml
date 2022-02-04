@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp">
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
             android:id="@+id/ll_platinum_trophy"
@@ -204,5 +204,16 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/view_game"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        app:backgroundTint="@color/btn_gray_color"
+        app:cornerRadius="100dp" />
 
 </LinearLayout>

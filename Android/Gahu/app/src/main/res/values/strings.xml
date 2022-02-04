@@ -21,4 +21,5 @@
     <string name="trophies">Trophies</string>
     <string name="earned">Earned</string>
     <string name="available">Available</string>
+    <string name="view_game">View Game</string>
 </resources>

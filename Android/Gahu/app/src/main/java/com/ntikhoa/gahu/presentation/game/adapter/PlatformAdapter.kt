@@ -1,7 +1,6 @@
 package com.ntikhoa.gahu.presentation.game.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -84,7 +83,7 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
                     ContextCompat.getColorStateList(context, R.color.btn_color)
             } else {
                 binding.btnPlatform.backgroundTintList =
-                    ContextCompat.getColorStateList(context, R.color.text_color_hint)
+                    ContextCompat.getColorStateList(context, R.color.btn_gray_color)
             }
         }
     }
