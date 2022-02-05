@@ -1,5 +1,6 @@
 package com.ntikhoa.gahu.di.trophy
 
+import com.ntikhoa.gahu.business.datasource.cache.trophy.TrophyDao
 import com.ntikhoa.gahu.business.datasource.network.trophy.GahuTrophyService
 import com.ntikhoa.gahu.business.interactor.trophy.GetTrophy
 import dagger.Module
@@ -15,7 +16,13 @@ object TrophyModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun providesGetTrophyUseCase(trophyService: GahuTrophyService): GetTrophy {
-        return GetTrophy(trophyService)
+    fun providesGetTrophyUseCase(
+        trophyService: GahuTrophyService,
+        trophyDao: TrophyDao
+    ): GetTrophy {
+        return GetTrophy(
+            trophyService = trophyService,
+            trophyDao = trophyDao
+        )
     }
 }
