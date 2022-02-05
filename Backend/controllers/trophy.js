@@ -3,6 +3,7 @@ module.exports.crawlTrophy = (req, res) => {
 
     const profile = getTotalProfile($)
     const games = getAllTrophies($)
+    profile._id = req.user._id
     profile.recent_played = games
     res.status(200).json({
         data: profile,
