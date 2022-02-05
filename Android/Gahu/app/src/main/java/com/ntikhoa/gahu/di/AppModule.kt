@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder
 import com.ntikhoa.gahu.business.datasource.cache.AppDatabase
 import com.ntikhoa.gahu.business.datasource.cache.account.AccountDao
 import com.ntikhoa.gahu.business.datasource.cache.game.GameDao
+import com.ntikhoa.gahu.business.datasource.cache.trophy.TrophyDao
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStore
 import com.ntikhoa.gahu.business.datasource.datastore.AppDataStoreImpl
 import com.ntikhoa.gahu.business.datasource.network.account.GahuAccountService
@@ -67,6 +68,12 @@ object AppModule {
     @Singleton
     fun providesGameDao(db: AppDatabase): GameDao {
         return db.getGameDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providesTrophyDao(db: AppDatabase): TrophyDao {
+        return db.getTrophyDao()
     }
 
     @Provides

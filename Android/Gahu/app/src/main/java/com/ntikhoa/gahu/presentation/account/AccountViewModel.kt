@@ -129,7 +129,7 @@ constructor(
 
                     dataState.message?.let { message ->
                         if (message == LOGOUT_SUCCESSFULLY) {
-                            sessionManager.token = null
+                            sessionManager.logout()
                         }
                         this._state.value = _state.value?.copy(message = message)
                     }

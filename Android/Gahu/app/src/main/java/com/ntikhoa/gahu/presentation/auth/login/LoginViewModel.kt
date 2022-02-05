@@ -45,7 +45,7 @@ constructor(
                     copiedState.isLoading = dataState.isLoading
 
                     dataState.data?.let { account ->
-                        sessionManager.token = account.token
+                        sessionManager.login(account.token, account.id)
                     }
 
                     dataState.message?.let { message ->

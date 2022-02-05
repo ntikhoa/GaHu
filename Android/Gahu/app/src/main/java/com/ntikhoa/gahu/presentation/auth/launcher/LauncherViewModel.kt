@@ -42,7 +42,7 @@ constructor(
             checkPrevAuthJob?.cancel()
             checkPrevAuthJob = checkPrevAuthUseCase().onEach { dataState ->
                 dataState.data?.let { data ->
-                    sessionManager.token = data.token
+                    sessionManager.login(data.token, data.id)
                 }
 
                 dataState.message?.let { message ->
