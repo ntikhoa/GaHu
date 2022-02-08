@@ -7,6 +7,10 @@ import com.ntikhoa.gahu.business.domain.model.TrophyProfile
 
 data class TrophyProfileResponse(
 
+    @SerializedName("_id")
+    @Expose
+    val id: String,
+
     @SerializedName("avatar")
     @Expose
     val avatar: String,
@@ -57,6 +61,7 @@ data class TrophyProfileResponse(
 ) {
     fun toDomain(): TrophyProfile {
         return TrophyProfile(
+            id = id,
             username = username,
             avatar = avatar,
             trophyLevel = trophyLevel,

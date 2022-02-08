@@ -28,7 +28,9 @@ class GetGames(
         val gamesEntity = getGamesListCache(page, platformId)
         val gamesCache = gamesEntity.map { it.toDomain() }
         var msg: String? = null
-        if (gamesCache.size <= (page - 1) * Constants.PAGE_SIZE)
+        if (gamesCache.size != 0
+            && gamesCache.size <= (page - 1) * Constants.PAGE_SIZE
+        )
             msg = ErrorHandler.EXHAUSTED
 
         emit(DataState(isLoading = true, data = gamesCache, message = msg))

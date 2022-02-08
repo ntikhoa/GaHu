@@ -33,17 +33,20 @@ constructor(
     override fun onTriggerEvent(event: TrophyEvent) {
         when (event) {
             is TrophyEvent.GetTrophy -> {
-                session.token?.let {
-                    getTrophy(it)
+                session.token?.let { token ->
+                    session.userId?.let { userId ->
+                        getTrophy(token, userId)
+
+                    }
                 }
             }
         }
     }
 
-    private fun getTrophy(token: String) {
+    private fun getTrophy(token: String, userId: String) {
         _state.value?.let {
             trophyJob?.cancel()
-            trophyJob = getTrophyUseCase(token).onEach { dataState ->
+            trophyJob = getTrophyUseCase(token, userId).onEach { dataState ->
 
                 val copiedState = it.copy()
 
