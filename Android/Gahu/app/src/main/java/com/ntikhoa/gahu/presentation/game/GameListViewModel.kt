@@ -125,6 +125,10 @@ constructor(
         }
     }
 
+    fun getPlatformFilter(): String? {
+        return _gameState.value?.platformIdFilter
+    }
+
     override fun cancelJob() {
         platformJob?.cancel()
         gameJob?.cancel()

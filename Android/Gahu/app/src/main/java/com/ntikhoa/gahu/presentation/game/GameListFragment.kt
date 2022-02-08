@@ -46,7 +46,12 @@ class GameListFragment : BaseFragment(R.layout.fragment_game_list) {
     }
 
     private fun initPlatformRv() {
-        platformAdapter = PlatformAdapter()
+        listViewModel.getPlatformFilter()?.let {
+            platformAdapter = PlatformAdapter(it)
+        } ?: run {
+            platformAdapter = PlatformAdapter()
+        }
+
         binding.rvPlatform.adapter = platformAdapter
         platformAdapter.setOnItemClickListener {
             Log.i(TAG, "onItemClick: ${it.id}")

@@ -11,15 +11,14 @@ import com.ntikhoa.gahu.R
 import com.ntikhoa.gahu.business.domain.model.Platform
 import com.ntikhoa.gahu.databinding.ItemPlatformBinding
 
-class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder>(DIFF_CALLBACK) {
+class PlatformAdapter(private var currentPlatformId: String = Platform.ALL_PLATFORM.id) :
+    ListAdapter<Platform, PlatformAdapter.PlatformViewHolder>(DIFF_CALLBACK) {
 
     private val TAG = "PlatformAdapter"
 
     private lateinit var context: Context
 
     private var listener: ((Platform) -> Unit)? = null
-
-    private var currentPlatform = Platform.ALL_PLATFORM
 
     fun setOnItemClickListener(listener: (Platform) -> Unit) {
         this.listener = listener
@@ -67,9 +66,11 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    currentPlatform = currentList[position]
-                    notifyDataSetChanged()
-                    listener?.invoke(currentList[position])
+                    if (currentPlatformId != currentList[position].id) {
+                        currentPlatformId = currentList[position].id
+                        notifyDataSetChanged()
+                        listener?.invoke(currentList[position])
+                    }
                 }
             }
         }
@@ -78,7 +79,7 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
             binding.btnPlatform.text = platform.name
 
             //All platform's id
-            if (platform == currentPlatform) {
+            if (platform.id == currentPlatformId) {
                 binding.btnPlatform.backgroundTintList =
                     ContextCompat.getColorStateList(context, R.color.btn_color)
             } else {
@@ -87,8 +88,4 @@ class PlatformAdapter : ListAdapter<Platform, PlatformAdapter.PlatformViewHolder
             }
         }
     }
-
-//    interface OnItemClickListener {
-//        fun onItemClick(platform: Platform)
-//    }
 }
