@@ -17,6 +17,8 @@ class GetGames(
     private val gameDao: GameDao,
     private val gameService: GahuGameService,
 ) {
+    private var isExhausted = false
+
     operator fun invoke(
         token: String,
         page: Int,
@@ -27,13 +29,12 @@ class GetGames(
 
         val gamesEntity = getGamesListCache(page, platformId)
         val gamesCache = gamesEntity.map { it.toDomain() }
-        var msg: String? = null
         if (gamesCache.size != 0
             && gamesCache.size <= (page - 1) * Constants.PAGE_SIZE
-        )
-            msg = ErrorHandler.EXHAUSTED
-
-        emit(DataState(isLoading = true, data = gamesCache, message = msg))
+        ) {
+            isExhausted = true
+        }
+        emit(DataState(isLoading = true, data = gamesCache))
 
         val gamesResponse = gameService.getGames(
             "Bearer $token",
@@ -42,6 +43,7 @@ class GetGames(
         )
 
         gamesResponse.data?.let {
+            isExhausted = false
             val games = it.games.map { it.toDomain() }
 
             updateLocalDb(games)
@@ -56,7 +58,9 @@ class GetGames(
         } ?: emit(DataState.error(gamesResponse.message))
 
     }.catch {
-        emit(handleUseCaseException(it))
+        if (isExhausted) {
+            emit(DataState.error(ErrorHandler.EXHAUSTED))
+        } else emit(handleUseCaseException(it))
     }
 
 
