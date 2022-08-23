@@ -18,7 +18,7 @@ Some of the main features of the app: can be use offline (without internet), vie
 * Improvement from previous projects: background jobs are handled properly, no concurency errors
 ### Backend
 * JavaScript, NodeJS, ExpressJS
-* MongoDB
+* MongoDB, MongoAtlas
 * MVC architecture
 * AWS S3
 * Deploy on Heroku
@@ -38,3 +38,44 @@ Some of the main features of the app: can be use offline (without internet), vie
 ![](Preview/trophy.png)
 ## Offline
 ![](Preview/offline.png)
+
+# Backend Organization
+```
+.
+├── controllers
+│   ├── auth.js
+│   ├── game.js
+│   ├── platform.js
+│   ├── trophy.js
+│   ├── user.js
+├── middlewares
+│   ├── auth.js
+│   ├── ...
+├── models
+│   ├── game.js
+│   ├── ...
+├── routes        
+│   ├── auth.js
+│   ├── ...
+├── seeds
+├── utils
+├── app.js
+```
+# How to run
+Environment:
+* SECRET_SIGNATURE &emsp; # Secret Signature for JWT
+* AWS_BUCKET_NAME &emsp; # AWS key
+* AWS_BUCKET_REGION
+* AWS_ACCESS_KEY
+* AWS_SECRET_KEY
+* MONGO_DB_NAME &emsp; # Mongo Database
+* MONGO_USERNAME
+* MONGO_PASSWORD
+
+Command: 
+```
+npm install
+npm start
+```
+
+API documentation: api documentation.xlsx
