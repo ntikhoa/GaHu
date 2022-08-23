@@ -9,7 +9,9 @@ import com.ntikhoa.gahu.presentation.CancelJob
 import com.ntikhoa.gahu.presentation.OnTriggerEvent
 import com.ntikhoa.gahu.presentation.session.SessionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -52,8 +54,9 @@ constructor(
                         copiedState.message = message
                     }
 
-                    _state.value = copiedState
-                }.launchIn(viewModelScope)
+                    _state.postValue(copiedState)
+                }.flowOn(Dispatchers.IO)
+                .launchIn(viewModelScope)
 
         }
     }
