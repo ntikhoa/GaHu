@@ -13,6 +13,7 @@ Some of the main features of the app: can be use offline (without internet), vie
 * Caching using Room
 * Flow
 * Apply best practice
+* Signle source of truth concept
 * Pagination (no external library), multiple ViewHolder in Recyler View
 * Dependency Injection (Hilt)
 * Improvement from previous projects: background jobs are handled properly, no concurency errors
