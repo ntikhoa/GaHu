@@ -1,5 +1,5 @@
 # GaHu
-demo link: 
+demo link: https://www.youtube.com/watch?v=7DLgglwiFcU
 # Introduction
 GaHu (Game Hunter), a project to view game info and Playstation trophy profile.<br/>
 The main objective of the project is to apply caching technique using Room in Android development.<br/>
@@ -35,6 +35,6 @@ Some of the main features of the app: can be use offline (without internet), vie
 ## Game Info
 ![](Preview/home.png)
 ## Trophy Profile
-![](Preview/trohpy.png)
+![](Preview/trophy.png)
 ## Offline
 ![](Preview/offline.png)
